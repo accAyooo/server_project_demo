@@ -12,6 +12,7 @@
 
 # idea
 .idea/
+server_project_demo.iml
 
 # Package Files #
 *.jar
