@@ -24,7 +24,7 @@ public class TestController {
 
     @RequestMapping("/test")
     public String test(HttpServletRequest request, HttpServletResponse response, Model m) {
-        String result = testService.returnString();
+        String result = testService.saveUser();
         m.addAttribute("result", result);
         return "/test";
     }

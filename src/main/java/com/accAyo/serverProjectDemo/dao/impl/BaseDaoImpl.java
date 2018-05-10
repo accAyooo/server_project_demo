@@ -1,68 +1,94 @@
 package com.accAyo.serverProjectDemo.dao.impl;
 
 import com.accAyo.serverProjectDemo.dao.IBaseDao;
-import com.accAyo.serverProjectDemo.util.KernelUtil;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
-import java.lang.reflect.ParameterizedType;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @Author: shixiangyu
  * @Description:
- * @Date: create in 下午10:59 2018/5/8
+ * @Date: create in 下午9:30 2018/5/10
  */
+
+@Repository
 public class BaseDaoImpl<T> implements IBaseDao<T> {
 
-    private Class<T> entityClass;
-    private String hql;
-
     @Resource
-    SessionFactory sessionFactory;
+    private SessionFactory sessionFactory;
 
     public Session getSession() {
         return sessionFactory.getCurrentSession();
     }
 
-    @SuppressWarnings("unchecked")
-    public BaseDaoImpl() {
-        // 通过反射获取类型的类对象
-        this.entityClass = (Class<T>) KernelUtil.getSuperClassGenericType(getClass(), 0);
-        this.hql = "from " + this.entityClass.getName();
-    }
-
-
-    @Override
-    public void add(Object entity) throws Exception {
-        this.getSession().save(entity);
+    public SessionFactory getSessionFactory() {
+        return sessionFactory;
     }
 
     @Override
-    public void update(Object entity) throws Exception {
-        this.getSession().update(entity);
+    public T find(Class<T> clazz, int id) {
+        return (T) getSession().get(clazz, id);
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public T findById(Integer id) throws Exception {
-        T result = (T) this.getSession().get(this.entityClass, id);
-        return result;
+    public void create(T t) {
+        getSession().saveOrUpdate(t);
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public List getPageList(int startIndex, int pageSize) throws Exception {
-        List<T> list = this.getSession().createQuery(hql).setFirstResult(startIndex)
-                .setMaxResults(pageSize).list();
+    public void save(T t) {
+        getSession().save(t);
+    }
+
+    @Override
+    public void delete(T t) {
+        getSession().delete(t);
+    }
+
+    @Override
+    public List<T> list(String hql, int firstResult, int maxResult, Map<String, Object> map) {
+        Query query = getQuery(hql, map);
+        List<T> list = query.setFirstResult(firstResult).setMaxResults(maxResult).list();
         return list;
     }
 
     @Override
-    public long getTotal() {
-        String sql = "select count(*) from " + this.entityClass.getName();
-        long count = (Long) this.getSession().createQuery(sql).uniqueResult();
-        return count;
+    public Query getQuery(String hql, Map<String, Object> map) {
+        Query query = getSession().createQuery(hql);
+        if (map != null) {
+            Set<String> keySet = map.keySet();
+            for (String key : keySet) {
+                Object value = map.get(key);
+                if (value instanceof Collection<?>) {
+                    query.setParameterList(key, (Collection[]) value);
+                } else if (value instanceof Object[]) {
+                    query.setParameterList(key, (Object[]) value);
+                } else {
+                    query.setParameter(key, value);
+                }
+            }
+        }
+        return query;
+    }
+
+    @Override
+    public List<T> list(String hql, Map<String, Object> map) {
+        Query query = getQuery(hql, map);
+        List<T> list = query.list();
+        return list;
+    }
+
+    @Override
+    public int getTotalCount(String hql, Map<String, Object> map) {
+        Query query = getQuery(hql, map);
+        Object obj = query.uniqueResult();
+        return ((Long) obj).intValue();
     }
 }

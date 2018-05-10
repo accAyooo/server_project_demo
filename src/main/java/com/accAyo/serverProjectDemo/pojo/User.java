@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Table(name = "user")
 public class User {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String name;
@@ -24,6 +24,9 @@ public class User {
     private Integer age;
 
     private String email;
+
+    public User() {
+    }
 
     public User(String name, String userName, String password, Integer age, String email) {
         this.name = name;

@@ -1,6 +1,7 @@
 package com.accAyo.serverProjectDemo.service.impl;
 
-import com.accAyo.serverProjectDemo.dao.impl.TestDaoImpl;
+import com.accAyo.serverProjectDemo.dao.impl.BaseDaoImpl;
+import com.accAyo.serverProjectDemo.pojo.User;
 import com.accAyo.serverProjectDemo.service.ITestService;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +16,12 @@ import javax.annotation.Resource;
 public class TestService implements ITestService {
 
     @Resource
-    TestDaoImpl testDaoImpl;
+    BaseDaoImpl baseDaoImpl;
 
     @Override
-    public String returnString() {
-        String result = testDaoImpl.daoTest();
-        return result;
+    public String saveUser() {
+        User user = new User("石翔宇", "accAyo", "xiangyang12", 18, "shixiangyu01@icloud.com");
+        baseDaoImpl.save(user);
+        return "success";
     }
 }

@@ -10,5 +10,5 @@ public interface ITestService {
     /**
      * @description 测试用
      */
-    String returnString();
+    String saveUser();
 }
