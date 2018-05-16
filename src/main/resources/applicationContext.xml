@@ -45,7 +45,7 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
         <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
         <prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
         <prop key="hibernate.dialect">${hibernate.dialect}</prop>
-        <!--<prop key="hibernate.current_session_context_class">${hibernate.session.context}</prop>-->
+        <prop key="hibernate.current_session_context_class">${hibernate.session.context}</prop>
       </props>
     </property>
     <!--<property name="schemaUpdate">-->
@@ -53,21 +53,45 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
     <!--</property>-->
   </bean>
 
+  <!--HibernateGenericController-->
+  <bean id="hibernateGenericController" class="com.accAyo.serverProjectDemo.service.HibernateBaseService.HibernateGenericController" >
+    <property name="hibernateTemplate" ref="hibernateTemplate"/>
+    <property name="cacheQueries" value="true"/>
+  </bean>
+
   <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager" >
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+
+  <tx:annotation-driven transaction-manager="transactionManager" />
+
+  <bean id="hibernateTemplate" class="org.springframework.orm.hibernate5.HibernateTemplate">
     <property name="sessionFactory" ref="sessionFactory" />
   </bean>
 
   <tx:advice id="txAdvice" transaction-manager="transactionManager">
     <tx:attributes>
-      <tx:method name="get*" read-only="true" propagation="REQUIRED"/>
-      <tx:method name="list*" read-only="true" propagation="REQUIRED" />
-      <tx:method name="find*" read-only="true" propagation="REQUIRED" />
-      <tx:method name="*" propagation="REQUIRED" rollback-for="Exception" />
+      <tx:method name="save*" propagation="REQUIRED" />
+      <tx:method name="add*" propagation="REQUIRED" />
+      <tx:method name="create*" propagation="REQUIRED" />
+      <tx:method name="insert*" propagation="REQUIRED" />
+      <tx:method name="update*" propagation="REQUIRED" />
+      <tx:method name="merge*" propagation="REQUIRED" />
+      <tx:method name="del*" propagation="REQUIRED" />
+      <tx:method name="remove*" propagation="REQUIRED" />
+      <tx:method name="put*" propagation="REQUIRED" />
+      <tx:method name="use*" propagation="REQUIRED" />
+      <tx:method name="recordOperLog" propagation="REQUIRED" />
+      <!--hibernate4必须配置为开启事务 否则 getCurrentSession()获取不到 -->
+      <tx:method name="get*" propagation="REQUIRED" read-only="true" />
+      <tx:method name="count*" propagation="REQUIRED" read-only="true" />
+      <tx:method name="find*" propagation="REQUIRED" read-only="true" />
+      <tx:method name="list*" propagation="REQUIRED" read-only="true" />
     </tx:attributes>
   </tx:advice>
 
   <aop:config proxy-target-class="true" >
-    <aop:advisor advice-ref="txAdvice" pointcut="execution(public * com.accAyo.serverProjectDemo.service.*Service.*())" />
+    <aop:advisor advice-ref="txAdvice" pointcut="execution(public * com.accAyo.serverProjectDemo.service.*.*())" />
   </aop:config>
 </beans>
 
