@@ -1,7 +1,8 @@
-package com.accAyo.serverProjectDemo.service.HibernateBaseService;
+package com.accAyo.serverProjectDemo.framwork.hibernateDao.HibernateBaseService;
 
-import com.accAyo.serverProjectDemo.common.CompareType;
-import com.accAyo.serverProjectDemo.common.LogicalType;
+import com.accAyo.serverProjectDemo.common.EnumInfo;
+import com.accAyo.serverProjectDemo.common.WingsException;
+import com.accAyo.serverProjectDemo.framwork.Exception.MainException;
 import com.accAyo.serverProjectDemo.util.ResultFilter;
 import com.accAyo.serverProjectDemo.util.ResultFilter1;
 import org.apache.commons.lang.StringUtils;
@@ -413,4 +414,5 @@ public abstract class BaseService {
         resultFilter.setItems(items);
         return resultFilter;
     }
+
 }

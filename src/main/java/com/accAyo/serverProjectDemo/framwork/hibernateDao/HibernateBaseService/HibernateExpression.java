@@ -1,4 +1,4 @@
-package com.accAyo.serverProjectDemo.service.HibernateBaseService;
+package com.accAyo.serverProjectDemo.framwork.hibernateDao.HibernateBaseService;
 
 import org.hibernate.criterion.Criterion;
 

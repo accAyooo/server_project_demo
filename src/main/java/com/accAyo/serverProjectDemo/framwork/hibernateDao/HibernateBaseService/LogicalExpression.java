@@ -1,6 +1,5 @@
-package com.accAyo.serverProjectDemo.service.HibernateBaseService;
+package com.accAyo.serverProjectDemo.framwork.hibernateDao.HibernateBaseService;
 
-import com.accAyo.serverProjectDemo.common.LogicalType;
 import org.hibernate.criterion.Criterion;
 
 import java.io.Serializable;

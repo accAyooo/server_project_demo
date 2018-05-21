@@ -1,10 +1,9 @@
-package com.accAyo.serverProjectDemo.service.HibernateBaseService;
+package com.accAyo.serverProjectDemo.framwork.hibernateDao.HibernateBaseService;
 
 import com.accAyo.serverProjectDemo.util.BeanUtil;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.hibernate.*;
 import org.hibernate.criterion.*;
-import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.internal.CriteriaImpl;
 import org.hibernate.metadata.ClassMetadata;
 import org.springframework.orm.hibernate5.HibernateCallback;
@@ -12,7 +11,6 @@ import org.springframework.orm.hibernate5.SessionFactoryUtils;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
-import net.sf.ehcache.Element;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;

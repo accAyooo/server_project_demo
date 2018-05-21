@@ -1,4 +1,4 @@
-package com.accAyo.serverProjectDemo.common;
+package com.accAyo.serverProjectDemo.framwork.hibernateDao.HibernateBaseService;
 
 /**
  * @Author: shixiangyu

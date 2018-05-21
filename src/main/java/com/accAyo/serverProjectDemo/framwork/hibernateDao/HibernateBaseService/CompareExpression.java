@@ -1,6 +1,5 @@
-package com.accAyo.serverProjectDemo.service.HibernateBaseService;
+package com.accAyo.serverProjectDemo.framwork.hibernateDao.HibernateBaseService;
 
-import com.accAyo.serverProjectDemo.common.CompareType;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.SimpleExpression;
 
@@ -12,7 +11,7 @@ import java.io.Serializable;
  * @Date: create in 下午11:40 2018/5/16
  */
 public class CompareExpression extends SimpleExpression implements
-        Serializable, HibernateExpression{
+        Serializable, HibernateExpression {
 
     String propertyName;
     Object value;
