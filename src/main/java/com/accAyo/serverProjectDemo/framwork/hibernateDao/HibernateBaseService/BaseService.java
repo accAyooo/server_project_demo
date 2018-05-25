@@ -1,10 +1,7 @@
 package com.accAyo.serverProjectDemo.framwork.hibernateDao.HibernateBaseService;
 
-import com.accAyo.serverProjectDemo.common.EnumInfo;
-import com.accAyo.serverProjectDemo.common.WingsException;
-import com.accAyo.serverProjectDemo.framwork.Exception.MainException;
-import com.accAyo.serverProjectDemo.util.ResultFilter;
-import com.accAyo.serverProjectDemo.util.ResultFilter1;
+import com.accAyo.serverProjectDemo.framwork.util.ResultFilter;
+import com.accAyo.serverProjectDemo.framwork.util.ResultFilter1;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;

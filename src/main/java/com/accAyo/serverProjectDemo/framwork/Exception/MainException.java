@@ -1,7 +1,5 @@
 package com.accAyo.serverProjectDemo.framwork.Exception;
 
-import com.accAyo.serverProjectDemo.common.EnumInfo;
-
 /**
  * @Author: shixiangyu
  * @Description:

@@ -1,6 +1,6 @@
 package com.accAyo.serverProjectDemo.framwork.hibernateDao.HibernateBaseService;
 
-import com.accAyo.serverProjectDemo.util.BeanUtil;
+import com.accAyo.serverProjectDemo.framwork.util.BeanUtil;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.hibernate.*;
 import org.hibernate.criterion.*;
