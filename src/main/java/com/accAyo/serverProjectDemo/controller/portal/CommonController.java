@@ -1,6 +1,7 @@
 package com.accAyo.serverProjectDemo.controller.portal;
 
 import com.accAyo.serverProjectDemo.service.impl.AuthCodeService;
+import com.accAyo.serverProjectDemo.service.impl.MemcachedService;
 import com.accAyo.serverProjectDemo.util.code.CaptchaUtil;
 import com.accAyo.serverProjectDemo.util.code.ICaptchaUtil;
 import org.springframework.stereotype.Controller;
@@ -14,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -28,8 +28,19 @@ public class CommonController {
 
     @Resource
     private AuthCodeService authCodeService;
+    @Resource
+    private MemcachedService memcachedService;
 
     protected static ICaptchaUtil captchaUtil = CaptchaUtil.getInstance();
+
+    @RequestMapping("/auth/test")
+    public void authTest() {
+        if (memcachedService.get("name#shixiangyu") != null) {
+            memcachedService.delete("name#shixiangyu");
+        }
+        memcachedService.set("name#shixiangyu", "shixiangyu");
+        System.out.println(memcachedService.get("name#shixiangyu"));
+    }
 
     @RequestMapping("/auth/code")
     @ResponseBody

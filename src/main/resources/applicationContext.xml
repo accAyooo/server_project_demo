@@ -53,6 +53,42 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
     <!--</property>-->
   </bean>
 
+  <!--memcachedPool-->
+  <bean id="memcachedPool" class="com.danga.MemCached.SockIOPool" factory-method="getInstance" init-method="initialize"
+        destroy-method="shutDown">
+    <constructor-arg>
+      <value>neeaMemcachedPool</value>
+    </constructor-arg>
+    <property name="servers">
+      <list>
+        <value>${mc.servers}</value>
+      </list>
+    </property>
+    <property name="initConn">
+      <value>${mc.initConn}</value>
+    </property>
+    <property name="minConn">
+      <value>${mc.minConn}</value>
+    </property>
+    <property name="maxConn">
+      <value>${mc.maxConn}</value>
+    </property>
+    <property name="maintSleep">
+      <value>${mc.maintSleep}</value>
+    </property>
+    <property name="nagle">
+      <value>${mc.nagle}</value>
+    </property>
+    <property name="socketTO">
+      <value>${mc.socketTO}</value>
+    </property>
+  </bean>
+  <bean id="memcachedClient" class="com.danga.MemCached.MemCachedClient">
+    <constructor-arg>
+      <value>neeaMemcachedPool</value>
+    </constructor-arg>
+  </bean>
+
   <!--HibernateGenericController-->
   <bean id="hibernateGenericController" class="com.accAyo.serverProjectDemo.framwork.hibernateDao.HibernateBaseService.HibernateGenericController" >
     <property name="hibernateTemplate" ref="hibernateTemplate"/>
