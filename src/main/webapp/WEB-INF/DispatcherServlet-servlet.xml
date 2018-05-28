@@ -18,6 +18,13 @@
   <mvc:resources mapping="/image/**" location="/resources/image/"/>
   <mvc:resources mapping="/js/**" location="/resources/js/"/>
   <mvc:resources mapping="/css/**" location="/resources/css/"/>
+  <mvc:interceptors>
+    <mvc:interceptor>
+      <mvc:mapping path="/**"/>
+      <bean class="com.accAyo.serverProjectDemo.interceptor.UserCheckInterceptor">
+      </bean>
+    </mvc:interceptor>
+  </mvc:interceptors>
 
   <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" id="viewResolver" >
     <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />

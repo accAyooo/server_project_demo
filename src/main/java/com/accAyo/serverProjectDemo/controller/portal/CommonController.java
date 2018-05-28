@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
@@ -46,7 +47,7 @@ public class CommonController {
     @ResponseBody
     public void getAccountsLoginAuthCode(@RequestParam String t,
                                          HttpServletRequest request, HttpServletResponse response) {
-        // todo 判断是否存在authcode
+        if (authCodeService.isCodeExists(t, request) || t == null || "".equals(t)) return;
 
         response.setHeader("Cache-Control", "no-store");
         response.setHeader("Pragma", "nocache");
@@ -56,34 +57,20 @@ public class CommonController {
         Object[] objects = captchaUtil.getImageChallenge();
         BufferedImage bufferedImage = (BufferedImage) objects[0];
 
+        authCodeService.setAuthCode("" + objects[1], t, request);
 
-        String fileName = t + ".png";
-//        String path = "/WEB-INF/code/";
-        String path = request.getSession().getServletContext().getRealPath("/WEB-INF/code");
-        File codeImage = new File(path + "/" + fileName);
-
-        if (!codeImage.exists()) {
-            try {
-                if (!codeImage.getParentFile().exists()) {
-                    codeImage.mkdirs();
-                }
-                codeImage.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        FileOutputStream fileOutputStream = null;
-
+        ServletOutputStream servletOutputStream = null;
         try {
-            fileOutputStream = new FileOutputStream(codeImage);
-            ImageIO.write(bufferedImage, "jpg", fileOutputStream);
-            fileOutputStream.flush();
-            fileOutputStream.close();
-        } catch (Exception e) {
+            servletOutputStream = response.getOutputStream();
+            ImageIO.write(bufferedImage, "jpg", servletOutputStream);
+            servletOutputStream.flush();
+            servletOutputStream.close();
+        } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            fileOutputStream = null;
+            if (servletOutputStream == null) {
+                servletOutputStream = null;
+            }
         }
     }
 }

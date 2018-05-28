@@ -9,7 +9,7 @@ public interface IMemcachedService  {
 
     public void set(String key, Object value);
 
-    public void set(String key, int exp, Object value);
+    public void set(String key, Object value, int exp);
 
     public Object get(String key);
 

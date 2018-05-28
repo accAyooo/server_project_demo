@@ -63,11 +63,11 @@ public class MemcachedService implements IMemcachedService, ConnectionObserver{
 
     @Override
     public void set(String key, Object value) {
-        set(key, EXP, value);
+        set(key, value, EXP);
     }
 
     @Override
-    public void set(String key, int exp, Object value) {
+    public void set(String key, Object value, int exp) {
         if (cache == null || value == null) {
             return;
         }

@@ -1,3 +1,4 @@
+import com.accAyo.serverProjectDemo.common.Constants;
 import com.danga.MemCached.MemCachedClient;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,17 +16,8 @@ import javax.annotation.PreDestroy;
 
 public class MemcacheTest{
 
-    private MemCachedClient client;
-
-    @Before
-    public void init() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
-        client = (MemCachedClient) context.getBean("memcachedClient");
-    }
-
     @Test
     public void test(){
-        client.set("name", "shixiangyu");
-        System.out.println(client.get("name"));
+        Integer year = Constants.ONE_YEAR_TIMESTAMP;
     }
  }

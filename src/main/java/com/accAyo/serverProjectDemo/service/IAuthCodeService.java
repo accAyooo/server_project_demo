@@ -10,4 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 public interface IAuthCodeService {
 
     public void setAuthCode(String code, String t, HttpServletRequest request);
+
+    public boolean isCodeExists(String t, HttpServletRequest request);
+
+    public boolean verifyAuthCode(String inputCode, String t, HttpServletRequest request);
 }
