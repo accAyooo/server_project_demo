@@ -26,9 +26,7 @@ public class AuthCodeService implements IAuthCodeService {
 
     @Override
     public void setAuthCode(String code, String t, HttpServletRequest request) {
-        // TODO: 2018/5/28 检查验证码是否存在
         String keyName = generateCodeKeyName(t, request);
-        System.out.println(keyName);
         memcachedService.set(keyName, code, CODE_EXPIRY_TIME);
     }
 

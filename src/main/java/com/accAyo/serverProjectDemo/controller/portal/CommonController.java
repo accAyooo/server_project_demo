@@ -29,20 +29,15 @@ public class CommonController {
 
     @Resource
     private AuthCodeService authCodeService;
-    @Resource
-    private MemcachedService memcachedService;
 
     protected static ICaptchaUtil captchaUtil = CaptchaUtil.getInstance();
 
-    @RequestMapping("/auth/test")
-    public void authTest() {
-        if (memcachedService.get("name#shixiangyu") != null) {
-            memcachedService.delete("name#shixiangyu");
-        }
-        memcachedService.set("name#shixiangyu", "shixiangyu");
-        System.out.println(memcachedService.get("name#shixiangyu"));
-    }
-
+    /**
+     * 返回验证码
+     * @param t
+     * @param request
+     * @param response
+     */
     @RequestMapping("/auth/code")
     @ResponseBody
     public void getAccountsLoginAuthCode(@RequestParam String t,
