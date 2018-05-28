@@ -15,4 +15,6 @@ public class Constants {
     public static final Integer ONE_YEAR_TIMESTAMP = 365 * ONE_DAY_TIMESTAMP;
 
     public static final int RANDOM_ONE_LENGTH = 16;
+
+    public static final String REQUEST_LOGIN_USER = "LOGIN_USER";
 }

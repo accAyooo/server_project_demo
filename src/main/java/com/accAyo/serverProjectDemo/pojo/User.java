@@ -1,5 +1,6 @@
 package com.accAyo.serverProjectDemo.pojo;
 
+import com.accAyo.serverProjectDemo.common.EnumUserType;
 import org.hibernate.exception.DataException;
 
 import javax.persistence.*;
@@ -50,6 +51,10 @@ public class User {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "active_time")
     private Date updateTime;
+
+    public boolean isType(EnumUserType userType) {
+        return this.type == userType.getValue();
+    }
 
     public int getId() {
         return id;

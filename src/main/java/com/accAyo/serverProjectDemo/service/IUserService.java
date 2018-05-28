@@ -2,6 +2,7 @@ package com.accAyo.serverProjectDemo.service;
 
 import com.accAyo.serverProjectDemo.framwork.Exception.MainException;
 import com.accAyo.serverProjectDemo.pojo.User;
+import com.accAyo.serverProjectDemo.vo.UserVO;
 
 import java.util.List;
 
@@ -30,4 +31,25 @@ public interface IUserService {
     public List<User> getAllUserByName(String name);
 
     public List<User> getAllUserByEmail(String email);
+
+    /**
+     * 通过id获取用户
+     * @param userId
+     * @return
+     */
+    public User getUser(int userId);
+
+    /**
+     * 返回vo对象
+     * @param user
+     * @return
+     */
+    public UserVO getUserVO(User user);
+
+    /**
+     * 通过ID获取userVO对象
+     * @param userId
+     * @return
+     */
+    public UserVO getUserVO(int userId);
 }

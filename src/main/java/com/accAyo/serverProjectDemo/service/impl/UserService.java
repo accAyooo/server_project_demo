@@ -13,6 +13,7 @@ import com.accAyo.serverProjectDemo.service.IUserService;
 import com.accAyo.serverProjectDemo.util.MD5;
 import com.accAyo.serverProjectDemo.util.StringUtil;
 import com.accAyo.serverProjectDemo.util.ValidationUtil;
+import com.accAyo.serverProjectDemo.vo.UserVO;
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import sun.applet.Main;
@@ -52,7 +53,18 @@ public class UserService extends BaseService implements IUserService {
         user.setRandom(getNewRandom(user.getRandom()));
         user.setCreateTime(new Date());
         user.setUpdateTime(new Date());
-        return null;
+
+        String verify = MD5.MD5(user.getRandom() + email);
+        while(getObjectByProperty(User.class, "verify", verify) != null){
+            user.setRandom(this.getNewRandom(user.getRandom()));
+            verify = MD5.MD5(user.getRandom() + email);
+        }
+        user.setVerify(verify);
+        this.updateObject(user);
+
+        // todo 创建一个任务
+
+        return user;
     }
 
     @Override
@@ -77,6 +89,36 @@ public class UserService extends BaseService implements IUserService {
             return rf.getItems();
         }
         return null;
+    }
+
+    @Override
+    public User getUser(int userId) {
+        return getObject(User.class, userId);
+    }
+
+    @Override
+    public UserVO getUserVO(User user) {
+        if (user == null)
+            return null;
+        UserVO userVO = new UserVO();
+        userVO.setId(user.getId());
+        userVO.setCityId(user.getCityId());
+        userVO.setName(user.getNickName());
+        userVO.setIcon(user.getIcon());
+        userVO.setType(user.getType());
+        userVO.setMark(user.getMark());
+        userVO.setCreateTime(user.getCreateTime());
+        userVO.setIntro(user.getIntro());
+        userVO.setStatus(user.getStatus());
+        return userVO;
+    }
+
+    @Override
+    public UserVO getUserVO(int userId) {
+        User user = getUser(userId);
+        if (user == null)
+            return null;
+        return getUserVO(user);
     }
 
     private boolean validateName(String name) throws MainException {
