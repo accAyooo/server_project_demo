@@ -1,8 +1,13 @@
 package com.accAyo.serverProjectDemo.interceptor;
 
+import com.accAyo.serverProjectDemo.service.impl.UserService;
 import com.accAyo.serverProjectDemo.util.CookieUtil;
+import com.accAyo.serverProjectDemo.vo.UserVO;
+import org.springframework.lang.Nullable;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -12,11 +17,38 @@ import javax.servlet.http.HttpServletResponse;
  * @Date: create in 下午11:21 2018/5/27
  */
 public class UserCheckInterceptor extends HandlerInterceptorAdapter {
+
+    private final static String JSONP_CALLBACK = "callback";
+    private final static String JSONP_PREFIX = "jQuery";
+
+    @Resource
+    private UserService userService;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         CookieUtil.setUc(request, response);
+
+        // 处理用户信息
+        UserVO userVO = CookieUtil.getLoginUser(request, userService);
+
+        if (this.isJsonp(request)) {
+            response.getOutputStream().print(request.getParameter(JSONP_CALLBACK) + "(");
+        }
+
         return super.preHandle(request, response, handler);
     }
 
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable ModelAndView modelAndView) throws Exception {
+        super.postHandle(request, response, handler, modelAndView);
+        if (this.isJsonp(request)) {
+            response.getOutputStream().print(")");
+        }
+    }
+
+    private boolean isJsonp(HttpServletRequest request) {
+        String callback = request.getParameter(JSONP_CALLBACK);
+        return callback != null && callback.startsWith(JSONP_PREFIX);
+    }
 
 }

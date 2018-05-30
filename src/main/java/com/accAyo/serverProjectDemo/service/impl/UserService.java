@@ -18,10 +18,9 @@ import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import sun.applet.Main;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 
 /**
  * Desc:
@@ -121,6 +120,38 @@ public class UserService extends BaseService implements IUserService {
         return getUserVO(user);
     }
 
+    @Override
+    public User login(String email, String password, HttpServletRequest request, HttpServletResponse response) throws MainException {
+        User user = null;
+        user = getUserByEmail(email);
+        if (user == null)
+            throw new MainException(EnumInfoMessage.ACCOUNTS_EMAIL_NOT_EXISIT, null);
+        if (!user.getPassword().equals(MD5.MD5(password)))
+            throw new MainException(EnumInfoMessage.ACCOUNTS_USER_PASSWORD_ERROR, null);
+        if (user.getStatus() < 0)
+            throw new MainException(EnumInfoMessage.ACTIVE_USER_STATUS, null);
+
+        randomUser(user, request);
+        return null;
+    }
+
+    private void randomUser(User user, HttpServletRequest request) {
+        user.setRandom(getNewRandom(user.getRandom(), request));
+        updateObject(user);
+    }
+
+    private User getUserByEmail(String email) {
+        User user = null;
+        HashMap<String, Object> propertyMap = new HashMap<>();
+        propertyMap.put("email", email);
+        Collection<HibernateExpression> expressions = formExpressionsByProperty(propertyMap, CompareType.Equal);
+        ResultFilter<User> userRF = getSingleObject(User.class, expressions, 1, 1, true, "id");
+        if (userRF.getTotalCount() > 0) {
+            user = userRF.getItems().get(0);
+        }
+        return user;
+    }
+
     private boolean validateName(String name) throws MainException {
         if (name == null)
             throw new MainException(EnumInfoMessage.ACCOUNTS_NICKNAME_ERROR, null);
@@ -133,6 +164,15 @@ public class UserService extends BaseService implements IUserService {
             throw new MainException(EnumInfoMessage.NICKNAME_EXIST_ERROR, null);
         }
         return true;
+    }
+
+    private String getNewRandom(String oldRandom, HttpServletRequest request) {
+        oldRandom = oldRandom + "00000000000000000000000000000000000000000000000000000000000000000000000000000000";
+        String newRandom = "";
+        String oldOneRandom = oldRandom.substring(1 * Constants.RANDOM_ONE_LENGTH, 2 * Constants.RANDOM_ONE_LENGTH);
+        newRandom = oldRandom.substring(0, 1 * Constants.RANDOM_ONE_LENGTH) + StringUtil.getOneRandom(oldOneRandom) + oldRandom.substring(2 * Constants.RANDOM_ONE_LENGTH);
+
+        return newRandom.substring(0, Constants.RANDOM_ONE_LENGTH * 5);
     }
 
     private String getNewRandom(String oldRandom) {

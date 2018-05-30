@@ -4,6 +4,8 @@ import com.accAyo.serverProjectDemo.framwork.Exception.MainException;
 import com.accAyo.serverProjectDemo.pojo.User;
 import com.accAyo.serverProjectDemo.vo.UserVO;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -52,4 +54,6 @@ public interface IUserService {
      * @return
      */
     public UserVO getUserVO(int userId);
+
+    public User login(String email, String password, HttpServletRequest request, HttpServletResponse response) throws MainException;
 }

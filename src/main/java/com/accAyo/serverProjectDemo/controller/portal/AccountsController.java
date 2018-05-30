@@ -3,6 +3,7 @@ package com.accAyo.serverProjectDemo.controller.portal;
 import com.accAyo.serverProjectDemo.common.EnumInfoMessage;
 import com.accAyo.serverProjectDemo.framwork.Exception.EnumInfo;
 import com.accAyo.serverProjectDemo.framwork.Exception.MainException;
+import com.accAyo.serverProjectDemo.pojo.User;
 import com.accAyo.serverProjectDemo.service.impl.AuthCodeService;
 import com.accAyo.serverProjectDemo.service.impl.UserService;
 import com.accAyo.serverProjectDemo.util.CookieUtil;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -42,6 +44,9 @@ public class AccountsController {
         InfoVO infoVO = new InfoVO();
 
         // todo 验证是否已经登录
+        UserVO userVO = CookieUtil.getLoginUser(request);
+        if (userVO != null)
+            return infoVO.createError(EnumInfoMessage.ACCOUNTS_ALREADY_LOGIN.getDesc());
 
         // 验证码校验
         boolean isVerified = authCodeService.verifyAuthCode(code, t, request);
@@ -56,13 +61,26 @@ public class AccountsController {
         if (password == null || StringUtils.isBlank(password))
             return infoVO.createError(EnumInfoMessage.ACCOUNTS_PASSWORD_ERROR.getDesc());
 
+        User user = null;
         try {
-            userService.register(email, password, nickName);
+            user = userService.register(email, password, nickName);
         } catch (MainException e) {
             infoVO.createError(e.getMessage());
         }
+        return infoVO.createSuccess(EnumInfoMessage.OBJECT_SUCCESS.getDesc(), userService.getUserVO(user));
+    }
 
-        return infoVO.createSuccess(EnumInfoMessage.OBJECT_SUCCESS.getDesc());
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @ResponseBody
+    public Object login(String email, String password, HttpServletRequest request, HttpServletResponse response) {
+        InfoVO infoVO = new InfoVO();
+
+        if (password == null || email == null || "".equals(email))
+            return infoVO.createError(EnumInfoMessage.OBJECT_FAILURE.getDesc());
+
+//        User user = userService.login(email, password, request, response);
+
+        return null;
     }
 
     @RequestMapping(value = "/userinfo")
