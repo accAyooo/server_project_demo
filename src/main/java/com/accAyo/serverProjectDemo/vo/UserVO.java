@@ -19,19 +19,13 @@ public class UserVO implements Serializable {
     private boolean isIconHidden;
     private boolean isWriter;
     private boolean isStaff;
-    private boolean isSpecialCritic;
     private boolean isSignWriter;
     private boolean isWebEditor;
     private boolean isVipUser;
-    private Date createTime;
-    private String intro;
-    private int cityId;
-    private String signature;
     private int bookCount;
     private int reviewCount;
     private int fansCount;
     private byte status;
-    private byte fromType;
 
     public void setType(int type) {
         isWriter = (type & EnumUserType.WRITER.getValue()) != 0;
@@ -86,14 +80,6 @@ public class UserVO implements Serializable {
         isStaff = staff;
     }
 
-    public boolean isSpecialCritic() {
-        return isSpecialCritic;
-    }
-
-    public void setSpecialCritic(boolean specialCritic) {
-        isSpecialCritic = specialCritic;
-    }
-
     public boolean isSignWriter() {
         return isSignWriter;
     }
@@ -116,38 +102,6 @@ public class UserVO implements Serializable {
 
     public void setVipUser(boolean vipUser) {
         isVipUser = vipUser;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getIntro() {
-        return intro;
-    }
-
-    public void setIntro(String intro) {
-        this.intro = intro;
-    }
-
-    public int getCityId() {
-        return cityId;
-    }
-
-    public void setCityId(int cityId) {
-        this.cityId = cityId;
-    }
-
-    public String getSignature() {
-        return signature;
-    }
-
-    public void setSignature(String signature) {
-        this.signature = signature;
     }
 
     public int getBookCount() {
@@ -182,17 +136,8 @@ public class UserVO implements Serializable {
         this.status = status;
     }
 
-    public byte getFromType() {
-        return fromType;
-    }
-
-    public void setFromType(byte fromType) {
-        this.fromType = fromType;
-    }
-
     public void setMark(int mark) {
         isSignWriter = (mark & EnumUserMark.SIGNED_WRITER.getValue()) != 0;
-        isSpecialCritic = (mark & EnumUserMark.SPECIAL_CRITIC.getValue()) != 0;
         isWebEditor = (mark & EnumUserMark.WEB_EDITOR.getValue()) != 0;
         isVipUser = (mark & EnumUserMark.VIP_USER.getValue()) != 0;
     }

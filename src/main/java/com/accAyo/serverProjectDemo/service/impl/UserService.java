@@ -49,17 +49,19 @@ public class UserService extends BaseService implements IUserService {
         User user = new User();
         user.setEmail(email);
         user.setPassword(MD5.MD5(password));
+        user.setNickName(nickName);
         user.setRandom(getNewRandom(user.getRandom()));
         user.setCreateTime(new Date());
         user.setUpdateTime(new Date());
 
+        // todo 不理解
         String verify = MD5.MD5(user.getRandom() + email);
         while(getObjectByProperty(User.class, "verify", verify) != null){
             user.setRandom(this.getNewRandom(user.getRandom()));
             verify = MD5.MD5(user.getRandom() + email);
         }
         user.setVerify(verify);
-        this.updateObject(user);
+        this.addObject(user);
 
         // todo 创建一个任务
 
@@ -69,7 +71,7 @@ public class UserService extends BaseService implements IUserService {
     @Override
     public List<User> getAllUserByName(String name) {
         HashMap<String, Object> propertyMap = new HashMap<>();
-        propertyMap.put("nick_name", name);
+        propertyMap.put("nickName", name);
         Collection<HibernateExpression> expressions = formExpressionsByProperty(propertyMap, CompareType.Equal);
         ResultFilter<User> rf = getAllObjects(User.class, expressions, true, "id");
         if (rf.getTotalCount() > 0) {
@@ -101,13 +103,10 @@ public class UserService extends BaseService implements IUserService {
             return null;
         UserVO userVO = new UserVO();
         userVO.setId(user.getId());
-        userVO.setCityId(user.getCityId());
         userVO.setName(user.getNickName());
         userVO.setIcon(user.getIcon());
         userVO.setType(user.getType());
         userVO.setMark(user.getMark());
-        userVO.setCreateTime(user.getCreateTime());
-        userVO.setIntro(user.getIntro());
         userVO.setStatus(user.getStatus());
         return userVO;
     }

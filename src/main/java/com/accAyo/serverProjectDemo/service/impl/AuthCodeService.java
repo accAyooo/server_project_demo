@@ -42,7 +42,7 @@ public class AuthCodeService implements IAuthCodeService {
         String keyName = generateCodeKeyName(t, request);
         String cacheCode = (String) memcachedService.get(keyName);
         if (cacheCode != null)
-            return inputCode == cacheCode;
+            return inputCode.toLowerCase().equals(cacheCode.toLowerCase());
 
         return false;
     }

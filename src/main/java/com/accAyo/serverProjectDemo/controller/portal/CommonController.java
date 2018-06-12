@@ -42,7 +42,7 @@ public class CommonController {
     @ResponseBody
     public void getAccountsLoginAuthCode(@RequestParam String t,
                                          HttpServletRequest request, HttpServletResponse response) {
-        if (authCodeService.isCodeExists(t, request) || t == null || "".equals(t)) return;
+        if ( t == null || "".equals(t)) return;
 
         response.setHeader("Cache-Control", "no-store");
         response.setHeader("Pragma", "nocache");

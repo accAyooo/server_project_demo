@@ -21,6 +21,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Author: shixiangyu
@@ -37,7 +39,7 @@ public class AccountsController {
     @Resource
     private AuthCodeService authCodeService;
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @RequestMapping(value = "/register", method = RequestMethod.GET)
     @ResponseBody
     public Object register(String code, String t, String nickName, String email, String password,
             HttpServletRequest request, HttpServletResponse response) {
@@ -67,6 +69,8 @@ public class AccountsController {
         } catch (MainException e) {
             infoVO.createError(e.getMessage());
         }
+        UserVO userResult = userService.getUserVO(user);
+        Map<String, Object> result = new HashMap<>();
         return infoVO.createSuccess(EnumInfoMessage.OBJECT_SUCCESS.getDesc(), userService.getUserVO(user));
     }
 
