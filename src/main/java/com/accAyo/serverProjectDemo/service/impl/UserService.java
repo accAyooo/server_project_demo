@@ -121,8 +121,7 @@ public class UserService extends BaseService implements IUserService {
 
     @Override
     public User login(String email, String password, HttpServletRequest request, HttpServletResponse response) throws MainException {
-        User user = null;
-        user = getUserByEmail(email);
+        User user = getUserByEmail(email);
         if (user == null)
             throw new MainException(EnumInfoMessage.ACCOUNTS_EMAIL_NOT_EXISIT, null);
         if (!user.getPassword().equals(MD5.MD5(password)))
@@ -144,7 +143,7 @@ public class UserService extends BaseService implements IUserService {
         HashMap<String, Object> propertyMap = new HashMap<>();
         propertyMap.put("email", email);
         Collection<HibernateExpression> expressions = formExpressionsByProperty(propertyMap, CompareType.Equal);
-        ResultFilter<User> userRF = getSingleObject(User.class, expressions, 1, 1, true, "id");
+        ResultFilter<User> userRF = getObjects(User.class, expressions, 1, 1, true, "id");
         if (userRF.getTotalCount() > 0) {
             user = userRF.getItems().get(0);
         }

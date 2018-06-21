@@ -1,24 +1,20 @@
 package com.accAyo.serverProjectDemo.controller.portal;
 
 import com.accAyo.serverProjectDemo.common.EnumInfoMessage;
-import com.accAyo.serverProjectDemo.framwork.Exception.EnumInfo;
 import com.accAyo.serverProjectDemo.framwork.Exception.MainException;
 import com.accAyo.serverProjectDemo.pojo.User;
 import com.accAyo.serverProjectDemo.service.impl.AuthCodeService;
 import com.accAyo.serverProjectDemo.service.impl.UserService;
 import com.accAyo.serverProjectDemo.util.CookieUtil;
-import com.accAyo.serverProjectDemo.util.ValidationUtil;
 import com.accAyo.serverProjectDemo.vo.InfoVO;
 import com.accAyo.serverProjectDemo.vo.UserVO;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
@@ -74,17 +70,34 @@ public class AccountsController {
         return infoVO.createSuccess(EnumInfoMessage.OBJECT_SUCCESS.getDesc(), userService.getUserVO(user));
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
     @ResponseBody
-    public Object login(String email, String password, HttpServletRequest request, HttpServletResponse response) {
+    public Object login(String authCode, String t, String email, String password, HttpServletRequest request, HttpServletResponse response) {
         InfoVO infoVO = new InfoVO();
+
+        UserVO userVO = CookieUtil.getLoginUser(request);
+        if (userVO != null)
+            return infoVO.createError(EnumInfoMessage.ACCOUNTS_ALREADY_LOGIN.getDesc());
+
+        boolean isVerified = authCodeService.verifyAuthCode(authCode, t, request);
+        if (!isVerified) {
+            return infoVO.createError(EnumInfoMessage.ACCOUNTS_VERFIY_ERROR.getDesc());
+        }
 
         if (password == null || email == null || "".equals(email))
             return infoVO.createError(EnumInfoMessage.OBJECT_FAILURE.getDesc());
 
-//        User user = userService.login(email, password, request, response);
-
-        return null;
+        try {
+            User user = userService.login(email, password, request, response);
+            UserVO resultVO = userService.getUserVO(user);
+            if (userVO == null) {
+                return infoVO.createError(EnumInfoMessage.OBJECT_FAILURE.getDesc());
+            }
+            return infoVO.createSuccess(resultVO);
+        } catch (MainException e) {
+            e.printStackTrace();
+            return infoVO.createError(e.getMessage());
+        }
     }
 
     @RequestMapping(value = "/userinfo")
