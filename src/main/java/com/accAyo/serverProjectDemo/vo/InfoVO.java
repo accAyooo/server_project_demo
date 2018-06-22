@@ -37,6 +37,11 @@ public class InfoVO {
         return map;
     }
 
+    public Map<String, Object> createSuccess() {
+        map.put("code", EnumResponseCode.SUCCESS_CODE.getCode());
+        return map;
+    }
+
     public Map<String, Object> createSuccess(String message) {
         map.put("code", EnumResponseCode.SUCCESS_CODE.getCode());
         map.put("message", message);

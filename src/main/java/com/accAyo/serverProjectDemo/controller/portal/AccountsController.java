@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
@@ -70,6 +71,17 @@ public class AccountsController {
         return infoVO.createSuccess(EnumInfoMessage.OBJECT_SUCCESS.getDesc(), userService.getUserVO(user));
     }
 
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    @ResponseBody
+    public Object logout(HttpServletRequest request, HttpServletResponse response) {
+        InfoVO infoVO = new InfoVO();
+        UserVO userVO = CookieUtil.getLoginUser(request);
+        if (userVO != null)
+            userService.logout(userVO.getId(), request);
+        CookieUtil.clearUser(request, response);
+        return infoVO.createSuccess();
+    }
+
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     @ResponseBody
     public Object login(String authCode, String t, String email, String password, HttpServletRequest request, HttpServletResponse response) {
@@ -90,7 +102,7 @@ public class AccountsController {
         try {
             User user = userService.login(email, password, request, response);
             UserVO resultVO = userService.getUserVO(user);
-            if (userVO == null) {
+            if (resultVO == null) {
                 return infoVO.createError(EnumInfoMessage.OBJECT_FAILURE.getDesc());
             }
             return infoVO.createSuccess(resultVO);

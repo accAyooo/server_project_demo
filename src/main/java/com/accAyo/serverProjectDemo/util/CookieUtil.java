@@ -118,4 +118,23 @@ public class CookieUtil {
         }
     }
 
+    public static void saveUser(User user, HttpServletRequest request, HttpServletResponse response) {
+        Cookie cookieUid = new Cookie(COOKIE_UID, user.getId() + "");
+        cookieUid.setMaxAge(Constants.ONE_YEAR_TIMESTAMP * 10);
+        response.addCookie(cookieUid);
+    }
+
+    public static void clearUser(HttpServletRequest request, HttpServletResponse response) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null && cookies.length > 0) {
+            for (Cookie c : cookies) {
+                if (COOKIE_UID.equals(c.getName()) || COOKIE_SID.equals(c.getName())) {
+                    c.setMaxAge(0);
+                    c.setPath("/");
+                    response.addCookie(c);
+                }
+            }
+        }
+        request.setAttribute(COOKIE_SID, null);
+    }
 }

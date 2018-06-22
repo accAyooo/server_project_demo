@@ -130,7 +130,13 @@ public class UserService extends BaseService implements IUserService {
             throw new MainException(EnumInfoMessage.ACTIVE_USER_STATUS, null);
 
         randomUser(user, request);
-        return null;
+        return user;
+    }
+
+    @Override
+    public void logout(int userId, HttpServletRequest request) {
+        User user = getUser(userId);
+        randomUser(user, request);
     }
 
     private void randomUser(User user, HttpServletRequest request) {
@@ -143,8 +149,10 @@ public class UserService extends BaseService implements IUserService {
         HashMap<String, Object> propertyMap = new HashMap<>();
         propertyMap.put("email", email);
         Collection<HibernateExpression> expressions = formExpressionsByProperty(propertyMap, CompareType.Equal);
-        ResultFilter<User> userRF = getObjects(User.class, expressions, 1, 1, true, "id");
+        ResultFilter<User> userRF = getSingleObject(User.class, expressions, 1, 1, true, "id");
+
         if (userRF.getTotalCount() > 0) {
+            System.out.println(1);
             user = userRF.getItems().get(0);
         }
         return user;

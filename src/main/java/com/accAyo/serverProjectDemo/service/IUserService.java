@@ -55,5 +55,22 @@ public interface IUserService {
      */
     public UserVO getUserVO(int userId);
 
+    /**
+     * 登录
+     * @param email
+     * @param password
+     * @param request
+     * @param response
+     * @return
+     * @throws MainException
+     */
     public User login(String email, String password, HttpServletRequest request, HttpServletResponse response) throws MainException;
+
+    /**
+     * 登出
+     * @param userId
+     * @param request
+     */
+    public void logout(int userId, HttpServletRequest request);
+
 }
