@@ -54,7 +54,7 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
   </bean>
 
   <!--HibernateGenericController-->
-  <bean id="hibernateGenericController" class="com.accAyo.serverProjectDemo.framwork.hibernateDao.HibernateBaseService.HibernateGenericController" >
+  <bean id="hibernateGenericController" class="com.accAyo.serverProjectDemo.framework.hibernateDao.HibernateBaseService.HibernateGenericController" >
     <property name="hibernateTemplate" ref="hibernateTemplate"/>
     <property name="cacheQueries" value="true"/>
   </bean>

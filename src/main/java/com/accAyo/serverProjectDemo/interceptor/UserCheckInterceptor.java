@@ -1,5 +1,7 @@
 package com.accAyo.serverProjectDemo.interceptor;
 
+import com.accAyo.serverProjectDemo.common.Constants;
+import com.accAyo.serverProjectDemo.pojo.User;
 import com.accAyo.serverProjectDemo.service.impl.UserService;
 import com.accAyo.serverProjectDemo.util.CookieUtil;
 import com.accAyo.serverProjectDemo.vo.UserVO;
@@ -30,6 +32,22 @@ public class UserCheckInterceptor extends HandlerInterceptorAdapter {
 
         // 处理用户信息
         UserVO userVO = CookieUtil.getLoginUser(request, userService);
+
+        // todo 写死manage的登录用户
+        if (request.getServletPath().startsWith("/manage")) {
+            User manageUser = userService.getUser(1);
+            UserVO manageUserVO = userService.getUserVO(manageUser);
+            request.setAttribute(Constants.REQUEST_LOGIN_USER, manageUserVO);
+            userVO = manageUserVO;
+        }
+
+
+        if (request.getServletPath().startsWith("/manage")) {
+            if (userVO == null || !userVO.isStaff()) {
+                response.sendRedirect("/error");
+                return false;
+            }
+        }
 
         if (this.isJsonp(request)) {
             response.getOutputStream().print(request.getParameter(JSONP_CALLBACK) + "(");

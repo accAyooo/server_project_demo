@@ -1,6 +1,6 @@
 package com.accAyo.serverProjectDemo.service;
 
-import com.accAyo.serverProjectDemo.framwork.Exception.MainException;
+import com.accAyo.serverProjectDemo.framework.Exception.MainException;
 import com.accAyo.serverProjectDemo.pojo.User;
 import com.accAyo.serverProjectDemo.vo.UserVO;
 

@@ -2,21 +2,18 @@ package com.accAyo.serverProjectDemo.service.impl;
 
 import com.accAyo.serverProjectDemo.common.Constants;
 import com.accAyo.serverProjectDemo.common.EnumInfoMessage;
-import com.accAyo.serverProjectDemo.framwork.Exception.EnumInfo;
-import com.accAyo.serverProjectDemo.framwork.Exception.MainException;
-import com.accAyo.serverProjectDemo.framwork.hibernateDao.HibernateBaseService.BaseService;
-import com.accAyo.serverProjectDemo.framwork.hibernateDao.HibernateBaseService.CompareType;
-import com.accAyo.serverProjectDemo.framwork.hibernateDao.HibernateBaseService.HibernateExpression;
-import com.accAyo.serverProjectDemo.framwork.util.ResultFilter;
+import com.accAyo.serverProjectDemo.framework.Exception.MainException;
+import com.accAyo.serverProjectDemo.framework.hibernateDao.HibernateBaseService.BaseService;
+import com.accAyo.serverProjectDemo.framework.hibernateDao.HibernateBaseService.CompareType;
+import com.accAyo.serverProjectDemo.framework.hibernateDao.HibernateBaseService.HibernateExpression;
+import com.accAyo.serverProjectDemo.framework.util.ResultFilter;
 import com.accAyo.serverProjectDemo.pojo.User;
 import com.accAyo.serverProjectDemo.service.IUserService;
 import com.accAyo.serverProjectDemo.util.MD5;
 import com.accAyo.serverProjectDemo.util.StringUtil;
 import com.accAyo.serverProjectDemo.util.ValidationUtil;
 import com.accAyo.serverProjectDemo.vo.UserVO;
-import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
-import sun.applet.Main;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -123,11 +120,11 @@ public class UserService extends BaseService implements IUserService {
     public User login(String email, String password, HttpServletRequest request, HttpServletResponse response) throws MainException {
         User user = getUserByEmail(email);
         if (user == null)
-            throw new MainException(EnumInfoMessage.ACCOUNTS_EMAIL_NOT_EXISIT, null);
+            throw new MainException(EnumInfoMessage.ACCOUNTS_EMAIL_NOT_EXISIT.getDesc());
         if (!user.getPassword().equals(MD5.MD5(password)))
-            throw new MainException(EnumInfoMessage.ACCOUNTS_USER_PASSWORD_ERROR, null);
+            throw new MainException(EnumInfoMessage.ACCOUNTS_USER_PASSWORD_ERROR.getDesc());
         if (user.getStatus() < 0)
-            throw new MainException(EnumInfoMessage.ACTIVE_USER_STATUS, null);
+            throw new MainException(EnumInfoMessage.ACTIVE_USER_STATUS.getDesc());
 
         randomUser(user, request);
         return user;

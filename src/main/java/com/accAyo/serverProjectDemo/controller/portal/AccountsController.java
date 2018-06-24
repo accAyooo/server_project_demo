@@ -1,7 +1,7 @@
 package com.accAyo.serverProjectDemo.controller.portal;
 
 import com.accAyo.serverProjectDemo.common.EnumInfoMessage;
-import com.accAyo.serverProjectDemo.framwork.Exception.MainException;
+import com.accAyo.serverProjectDemo.framework.Exception.MainException;
 import com.accAyo.serverProjectDemo.pojo.User;
 import com.accAyo.serverProjectDemo.service.impl.AuthCodeService;
 import com.accAyo.serverProjectDemo.service.impl.UserService;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
@@ -107,7 +106,6 @@ public class AccountsController {
             }
             return infoVO.createSuccess(resultVO);
         } catch (MainException e) {
-            e.printStackTrace();
             return infoVO.createError(e.getMessage());
         }
     }
