@@ -1,18 +1,20 @@
 package com.accAyo.serverProjectDemo.service.impl;
 
-import com.accAyo.serverProjectDemo.common.Constants;
-import com.accAyo.serverProjectDemo.common.EnumInfoMessage;
+import com.accAyo.serverProjectDemo.common.*;
 import com.accAyo.serverProjectDemo.framework.Exception.MainException;
 import com.accAyo.serverProjectDemo.framework.hibernateDao.HibernateBaseService.BaseService;
+import com.accAyo.serverProjectDemo.framework.hibernateDao.HibernateBaseService.CompareExpression;
 import com.accAyo.serverProjectDemo.framework.hibernateDao.HibernateBaseService.CompareType;
 import com.accAyo.serverProjectDemo.framework.hibernateDao.HibernateBaseService.HibernateExpression;
 import com.accAyo.serverProjectDemo.framework.util.ResultFilter;
 import com.accAyo.serverProjectDemo.pojo.User;
+import com.accAyo.serverProjectDemo.pojo.UserStaff;
 import com.accAyo.serverProjectDemo.service.IUserService;
 import com.accAyo.serverProjectDemo.util.MD5;
 import com.accAyo.serverProjectDemo.util.StringUtil;
 import com.accAyo.serverProjectDemo.util.ValidationUtil;
 import com.accAyo.serverProjectDemo.vo.UserVO;
+import com.sun.tools.internal.jxc.ap.Const;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -134,6 +136,51 @@ public class UserService extends BaseService implements IUserService {
     public void logout(int userId, HttpServletRequest request) {
         User user = getUser(userId);
         randomUser(user, request);
+    }
+
+    @Override
+    public User getNormalUserByEmail(String email) {
+        HashMap<String, Object> propertyMap = new HashMap<>();
+        propertyMap.put("email", email);
+        Collection<HibernateExpression> expressions = formExpressionsByProperty(propertyMap, CompareType.Equal);
+        expressions.add(new CompareExpression("status", EnumUserStatus.LOGOFF.getValue(), CompareType.NotEqual));
+        expressions.add(new CompareExpression("status", EnumUserStatus.DELETED.getValue(), CompareType.NotEqual));
+
+        ResultFilter<User> resultFilter = getSingleObject(User.class, expressions, 1, 1, true, "id");
+        if (resultFilter.getTotalCount() > 0) {
+            return resultFilter.getItems().get(0);
+        }
+        return null;
+    }
+
+    @Override
+    public boolean addStaff(int id, String staffName, EnumStaffType resultType) {
+//        UserStaff testStaff = this.getObject(UserStaff.class, id);
+//        System.out.println(testStaff.getName());
+
+        User user = getUser(id);
+        if (user == null)
+            return false;
+        UserStaff staff = this.getObject(UserStaff.class, id);
+        if (staff != null && staff.getStatus() != Constants.STATUS_DELETE)
+            return false;
+
+        staff = new UserStaff();
+        staff.setType(resultType.getValue());
+        staff.setName(staffName);
+        staff.setCreateTime(user.getCreateTime());
+        staff.setStatus(Constants.STATUS_NORMAL);
+
+        if (staff.getId() == 0) {
+            staff.setId(id);
+            this.addObject(staff);
+        } else {
+            this.updateObject(staff);
+        }
+
+        user.setType(user.getType() | EnumUserType.STAFF.getValue());
+        this.updateObject(user);
+        return true;
     }
 
     private void randomUser(User user, HttpServletRequest request) {

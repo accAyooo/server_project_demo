@@ -8,7 +8,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <style>
     .header {
-        position: relative;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
     }
     .header .row-1, .header .row-2 {
         position: absolute;
@@ -20,6 +23,11 @@
     .header .row-1 {
         right: 150px;
         top: 30px;
+    }
+    .main {
+        position: relative;
+        top: 76px;
+        padding: 0 40px;
     }
 </style>
 <header class="header" id="Header" style="overflow:hidden;background-color: #333">

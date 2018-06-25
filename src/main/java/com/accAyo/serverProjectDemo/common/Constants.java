@@ -17,4 +17,7 @@ public class Constants {
     public static final int RANDOM_ONE_LENGTH = 16;
 
     public static final String REQUEST_LOGIN_USER = "LOGIN_USER";
+
+    public static final byte STATUS_DELETE = -1;
+    public static final byte STATUS_NORMAL = 0;
 }
