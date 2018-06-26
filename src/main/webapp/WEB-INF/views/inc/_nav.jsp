@@ -37,8 +37,8 @@
     List navItems = new ArrayList();
 
     Map userItems = new HashMap();
-    userItems.put("user_add", new String[]{"添加用户", "/staff/add"});
-    userItems.put("user_list", new String[]{"用户列表", "/staff/list"});
+    userItems.put("user_add", new String[]{"添加员工", "/staff/add"});
+    userItems.put("user_list", new String[]{"员工列表", "/staff/list"});
     navItems.add(userItems);
 
     Map bookItems = new HashMap();

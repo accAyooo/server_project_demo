@@ -25,4 +25,14 @@ public enum  EnumUserType {
     public int getValue() {
         return value;
     }
+
+    public static EnumUserType getEnum(int type) {
+        EnumUserType[] types = EnumUserType.values();
+        for (int i = 0; i < types.length; i ++) {
+            if (types[i].getValue() == type) {
+                return types[i];
+            }
+        }
+        return null;
+    }
 }

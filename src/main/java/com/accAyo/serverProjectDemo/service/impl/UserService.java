@@ -14,6 +14,7 @@ import com.accAyo.serverProjectDemo.util.MD5;
 import com.accAyo.serverProjectDemo.util.StringUtil;
 import com.accAyo.serverProjectDemo.util.ValidationUtil;
 import com.accAyo.serverProjectDemo.vo.UserVO;
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -106,6 +107,7 @@ public class UserService extends BaseService implements IUserService {
         userVO.setType(user.getType());
         userVO.setMark(user.getMark());
         userVO.setStatus(user.getStatus());
+        userVO.setEmail(user.getEmail());
         return userVO;
     }
 
@@ -150,36 +152,6 @@ public class UserService extends BaseService implements IUserService {
             return resultFilter.getItems().get(0);
         }
         return null;
-    }
-
-    @Override
-    public boolean addStaff(int id, String staffName, EnumStaffType resultType) {
-//        UserStaff testStaff = this.getObject(UserStaff.class, id);
-//        System.out.println(testStaff.getName());
-
-        User user = getUser(id);
-        if (user == null)
-            return false;
-        UserStaff staff = this.getObject(UserStaff.class, id);
-        if (staff != null && staff.getStatus() != Constants.STATUS_DELETE)
-            return false;
-
-        staff = new UserStaff();
-        staff.setType(resultType.getValue());
-        staff.setName(staffName);
-        staff.setCreateTime(user.getCreateTime());
-        staff.setStatus(Constants.STATUS_NORMAL);
-
-        if (staff.getId() == 0) {
-            staff.setId(id);
-            this.addObject(staff);
-        } else {
-            this.updateObject(staff);
-        }
-
-        user.setType(user.getType() | EnumUserType.STAFF.getValue());
-        this.updateObject(user);
-        return true;
     }
 
     private void randomUser(User user, HttpServletRequest request) {

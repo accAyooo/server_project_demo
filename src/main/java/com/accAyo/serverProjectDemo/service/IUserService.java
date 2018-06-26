@@ -2,7 +2,9 @@ package com.accAyo.serverProjectDemo.service;
 
 import com.accAyo.serverProjectDemo.common.EnumStaffType;
 import com.accAyo.serverProjectDemo.framework.Exception.MainException;
+import com.accAyo.serverProjectDemo.framework.util.ResultFilter;
 import com.accAyo.serverProjectDemo.pojo.User;
+import com.accAyo.serverProjectDemo.pojo.UserStaff;
 import com.accAyo.serverProjectDemo.vo.UserVO;
 
 import javax.servlet.http.HttpServletRequest;
@@ -80,13 +82,4 @@ public interface IUserService {
      * @return
      */
     public User getNormalUserByEmail(String email);
-
-    /**
-     * 添加工作人员
-     * @param id
-     * @param staffName
-     * @param resultType
-     * @return
-     */
-    public boolean addStaff(int id, String staffName, EnumStaffType resultType);
 }

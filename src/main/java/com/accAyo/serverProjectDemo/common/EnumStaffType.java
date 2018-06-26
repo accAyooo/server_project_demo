@@ -45,7 +45,7 @@ public enum EnumStaffType {
         return parent;
     }
 
-    public static EnumStaffType getEnum(byte type) {
+    public static EnumStaffType getEnum(int type) {
         EnumStaffType[] status = EnumStaffType.values();
         for (int i = 0; i < status.length; i ++) {
             if (status[i].getValue() == type) {

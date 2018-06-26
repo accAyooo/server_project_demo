@@ -1,6 +1,8 @@
 package com.accAyo.serverProjectDemo.pojo;
 
 import com.accAyo.serverProjectDemo.common.EnumStaffType;
+import com.accAyo.serverProjectDemo.common.EnumUserStatus;
+import com.accAyo.serverProjectDemo.common.EnumUserType;
 import com.accAyo.serverProjectDemo.vo.UserVO;
 
 import javax.persistence.*;

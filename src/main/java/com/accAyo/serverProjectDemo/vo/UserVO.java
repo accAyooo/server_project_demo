@@ -1,6 +1,7 @@
 package com.accAyo.serverProjectDemo.vo;
 
 import com.accAyo.serverProjectDemo.common.EnumUserMark;
+import com.accAyo.serverProjectDemo.common.EnumUserStatus;
 import com.accAyo.serverProjectDemo.common.EnumUserType;
 
 import java.beans.Transient;
@@ -26,6 +27,15 @@ public class UserVO implements Serializable {
     private int reviewCount;
     private int fansCount;
     private byte status;
+    private String email;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public void setType(int type) {
         isWriter = (type & EnumUserType.WRITER.getValue()) != 0;
@@ -134,6 +144,10 @@ public class UserVO implements Serializable {
 
     public void setStatus(byte status) {
         this.status = status;
+    }
+
+    public EnumUserStatus getEnumUserStatus() {
+        return EnumUserStatus.getEnum(status);
     }
 
     public void setMark(int mark) {
