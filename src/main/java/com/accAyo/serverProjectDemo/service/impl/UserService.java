@@ -14,7 +14,6 @@ import com.accAyo.serverProjectDemo.util.MD5;
 import com.accAyo.serverProjectDemo.util.StringUtil;
 import com.accAyo.serverProjectDemo.util.ValidationUtil;
 import com.accAyo.serverProjectDemo.vo.UserVO;
-import com.sun.tools.internal.jxc.ap.Const;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
