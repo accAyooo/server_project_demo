@@ -2,6 +2,7 @@ package com.accAyo.serverProjectDemo.service;
 
 import com.accAyo.serverProjectDemo.common.EnumStaffType;
 import com.accAyo.serverProjectDemo.framework.util.ResultFilter;
+import com.accAyo.serverProjectDemo.pojo.Access;
 import com.accAyo.serverProjectDemo.pojo.UserStaff;
 
 /**
@@ -62,4 +63,18 @@ public interface IStaffService {
      * 开启权限
      */
     void openStaff(UserStaff staff);
+
+    /**
+     * 添加权限
+     * @param name
+     * @param path
+     * @return
+     */
+    boolean addAccess(String name, String path);
+
+    /**
+     * 获取权限列表（所有）
+     * @return
+     */
+    ResultFilter<Access> listAccesses();
 }

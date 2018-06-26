@@ -7,6 +7,8 @@ import com.accAyo.serverProjectDemo.framework.hibernateDao.HibernateBaseService.
 import com.accAyo.serverProjectDemo.framework.hibernateDao.HibernateBaseService.CompareType;
 import com.accAyo.serverProjectDemo.framework.hibernateDao.HibernateBaseService.HibernateExpression;
 import com.accAyo.serverProjectDemo.framework.util.ResultFilter;
+import com.accAyo.serverProjectDemo.pojo.Access;
+import com.accAyo.serverProjectDemo.pojo.Role;
 import com.accAyo.serverProjectDemo.pojo.User;
 import com.accAyo.serverProjectDemo.pojo.UserStaff;
 import com.accAyo.serverProjectDemo.service.IStaffService;
@@ -107,5 +109,18 @@ public class StaffService extends BaseService implements IStaffService {
     public void openStaff(UserStaff staff) {
         staff.setStatus(Constants.STATUS_NORMAL);
         this.updateObject(staff);
+    }
+
+    @Override
+    public boolean addAccess(String name, String path) {
+        Access access = getObjectByProperty(Access.class, "path", path);
+        if (access != null)
+            return false;
+        access = new Access();
+        access.setName(name);
+        access.setPath(path);
+
+        this.addObject(access);
+        return true;
     }
 }

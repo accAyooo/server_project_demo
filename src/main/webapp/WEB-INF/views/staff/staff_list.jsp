@@ -22,7 +22,10 @@
         <%@include file="/WEB-INF/views/inc/_nav.jsp"%>
 
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <h1 class="page-header">员工列表</h1>
+            <h1 class="page-header">
+                员工列表
+                <a href="/manage/staff/add" class="btn btn-success btn-xs">添加</a>
+            </h1>
             <div class="">
                 <table class="table table-bordered" style="font-size: 14px;">
                     <tbody>

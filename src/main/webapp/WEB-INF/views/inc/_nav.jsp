@@ -1,8 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="java.util.Map" %>
-<%@ page import="java.util.HashMap" %>
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.ArrayList" %><%--
+<%@ page import="java.util.*" %><%--
   Created by IntelliJ IDEA.
   User: ayooo
   Date: 2018/6/25
@@ -36,12 +33,13 @@
 <%
     List navItems = new ArrayList();
 
-    Map userItems = new HashMap();
-    userItems.put("user_add", new String[]{"添加员工", "/staff/add"});
+    Map userItems = new LinkedHashMap();
     userItems.put("user_list", new String[]{"员工列表", "/staff/list"});
+    userItems.put("role_list", new String[]{"角色列表", "/role/list"});
+    userItems.put("access_list", new String[]{"权限列表", "/role/access/list"});
     navItems.add(userItems);
 
-    Map bookItems = new HashMap();
+    Map bookItems = new LinkedHashMap();
     bookItems.put("book_add", new String[]{"添加小说", "/book/add"});
     navItems.add(bookItems);
 
