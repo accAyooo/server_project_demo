@@ -30,6 +30,18 @@
         padding: 0 40px;
     }
 </style>
+<style>
+    .checkboxes input[type=checkbox]:checked + div {
+        background: #F9EEC3;
+    }
+    .checkboxes div {
+        padding: 10px;
+        background: #F9F9F9;
+        border-radius: 3px;
+        height: 60px;
+        cursor: pointer;
+    }
+</style>
 <header class="header" id="Header" style="overflow:hidden;background-color: #333">
     <div class="logo" style="">
         <h3 href="/manage/index" style="color: #ffffff; padding-top: 10px;padding-bottom: 10px;padding-left: 10px;">柠檬阅读后台</h3>

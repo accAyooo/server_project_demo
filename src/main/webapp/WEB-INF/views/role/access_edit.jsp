@@ -8,7 +8,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<c:set var="navName" value="role_add" />
+<c:set var="navName" value="" />
 <html>
 <head>
     <title>Title</title>
@@ -22,28 +22,19 @@
         <%@include file="/WEB-INF/views/inc/_nav.jsp"%>
 
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <h1 class="page-header">新建角色</h1>
+            <h1 class="page-header">添加权限</h1>
             <div class="">
-                <form action="/manage/role/add" class="form-horizontal" method="post">
+                <form action="/manage/role/access/${access.id}/edit" class="form-horizontal" method="post">
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">角色名称：</label>
+                        <label class="col-sm-2 control-label">权限名称:</label>
                         <div class="col-lg-6 col-md-8 col-sm-8">
-                            <input type="text" class="form-control" placeholder="请输入电子邮箱地址" name="name">
+                            <input type="text" class="form-control" placeholder="输入权限名称" value="${access.name}" readonly>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">选择权限：</label>
-                        <div class="col-sm-8">
-                            <div class="row">
-                                <c:forEach items="${accessRF.items}" var="item">
-                                <label for="c${item.id}" class="checkboxes col-lg-6 col-sm-6">
-                                    <input type="checkbox" name="access" id="c${item.id}" value="${item.id}" style="display: none">
-                                    <div style="height: 80px;" title="${item.name}${item.path}">
-                                        <h5>${item.name}</h5><p>${item.path}</p>
-                                    </div>
-                                </label>
-                                </c:forEach>
-                            </div>
+                        <label class="col-sm-2 control-label">路径:</label>
+                        <div class="col-lg-6 col-md-8 col-sm-8">
+                            <input type="text" class="form-control" placeholder="输入路径" name="path" value="${access.path}">
                         </div>
                     </div>
                     <div class="form-group">

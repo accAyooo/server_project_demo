@@ -3,10 +3,13 @@ package com.accAyo.serverProjectDemo.controller.manage;
 import com.accAyo.serverProjectDemo.common.EnumInfoMessage;
 import com.accAyo.serverProjectDemo.framework.util.ResultFilter;
 import com.accAyo.serverProjectDemo.pojo.Access;
+import com.accAyo.serverProjectDemo.pojo.Role;
 import com.accAyo.serverProjectDemo.service.impl.StaffService;
 import com.accAyo.serverProjectDemo.service.impl.UserService;
+import com.accAyo.serverProjectDemo.util.StringUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -31,28 +34,59 @@ public class RoleManageController {
     private UserService userService;
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
-    public String addRolePage(HttpServletRequest request, HttpServletResponse response) {
+    public String addRolePage(HttpServletRequest request, HttpServletResponse response, Model model) {
+        ResultFilter<Access> accessRF = staffService.listAccesses();
+        model.addAttribute("accessRF", accessRF);
         return "/role/role_add";
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String addRole(String roleName,
+    public String addRoleAction(String name,
                           HttpServletRequest request, HttpServletResponse response, Model model) {
-
+        String[] accessesId = request.getParameterValues("access");
+        Role role = staffService.addRole(name);
+        for (String accessStr : accessesId) {
+            int accessId = StringUtil.str2int(accessStr);
+            if (accessId > 0) {
+                staffService.addRoleAccess(role.getId(), accessId);
+            }
+        }
         return "/role/role_add";
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String roleListPage(HttpServletRequest request, HttpServletResponse response, Model model) {
-
-
         return "/role/role_list";
     }
 
     @RequestMapping(value = "/access/list", method = RequestMethod.GET)
     public String accessListPage(HttpServletRequest request, HttpServletResponse response, Model model) {
         ResultFilter<Access> rf = staffService.listAccesses();
+        model.addAttribute("rf", rf);
         return "/role/access_list";
+    }
+
+    @RequestMapping(value = "/access/{id}/edit", method = RequestMethod.GET)
+    public String accessEditPage(@PathVariable int id,
+                                 HttpServletRequest request, HttpServletResponse response, Model model) {
+        Access access = staffService.getAccessById(id);
+        if (access == null) {
+            model.addAttribute("errorMessage", EnumInfoMessage.OBJECT_NOT_EXIST.getDesc());
+            return "/role/access_edit";
+        }
+        model.addAttribute("access", access);
+        return "/role/access_edit";
+    }
+
+    @RequestMapping(value = "/access/{id}/edit", method = RequestMethod.POST)
+    public String accessEdit(@PathVariable int id, String path,
+                             HttpServletRequest request, HttpServletResponse response, Model model) {
+        boolean isSuccess = staffService.updateAccess(id, path);
+        if (!isSuccess) {
+            model.addAttribute("errorMessage", EnumInfoMessage.OBJECT_FAILURE.getDesc());
+            return "/role/access_edit";
+        }
+        return "redirect:/manage/role/access/list";
     }
 
     @RequestMapping(value = "/access/add", method = RequestMethod.GET)

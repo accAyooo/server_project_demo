@@ -3,6 +3,7 @@ package com.accAyo.serverProjectDemo.service;
 import com.accAyo.serverProjectDemo.common.EnumStaffType;
 import com.accAyo.serverProjectDemo.framework.util.ResultFilter;
 import com.accAyo.serverProjectDemo.pojo.Access;
+import com.accAyo.serverProjectDemo.pojo.Role;
 import com.accAyo.serverProjectDemo.pojo.UserStaff;
 
 /**
@@ -77,4 +78,38 @@ public interface IStaffService {
      * @return
      */
     ResultFilter<Access> listAccesses();
+
+    /**
+     * 通过ID获取权限
+     * @param id
+     * @return
+     */
+    Access getAccessById(int id);
+
+    /**
+     * 更新权限
+     * @param id
+     * @param path
+     * @return
+     */
+    boolean updateAccess(int id, String path);
+
+    /**
+     * 获取所有角色
+     * @return
+     */
+    ResultFilter<Role> listAllRoles();
+
+    /** 添加角色
+     * @param name
+     */
+    Role addRole(String name);
+
+    /**
+     * 绑定角色和权限
+     * @param id
+     * @param accessId
+     * @return
+     */
+    boolean addRoleAccess(int id, int accessId);
 }

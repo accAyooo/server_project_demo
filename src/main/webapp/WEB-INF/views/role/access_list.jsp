@@ -36,6 +36,21 @@
                         <th>操作</th>
                     </tr>
                     </tbody>
+                    <c:forEach items="${rf.items}" var="item">
+                        <tr>
+                            <td>
+                                ${item.id}
+                            </td>
+                            <td>
+                                ${item.name}
+                            </td>
+                            <td>${item.path}</td>
+                            <td>
+                                <a href="/manage/role/access/${item.id}/edit">编辑</a>
+                                <a href="/manage/role/access/${item.id}/del">删除</a>
+                            </td>
+                        </tr>
+                    </c:forEach>
                 </table>
             </div>
         </div>

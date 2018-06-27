@@ -16,4 +16,18 @@ public class StringUtil {
         }
         return ram.substring(0, Constants.RANDOM_ONE_LENGTH);
     }
+
+    public static int str2int(String str) {
+        int i = 0;
+        if (str == null) {
+            return 0;
+        } else {
+            try {
+                i = Integer.parseInt(str);
+            } catch (Exception e) {
+                return 0;
+            }
+        }
+        return i;
+    }
 }
