@@ -34,6 +34,16 @@
                         <th>角色名称</th>
                         <th>操作</th>
                     </tr>
+                    <c:forEach items="${roleRF.items}" var="item" >
+                        <tr>
+                            <td>${item.id}</td>
+                            <td>${item.name}</td>
+                            <td>
+                                <a href="/manage/role/${item.id}/edit">权限</a>
+                                <a href="/manage/role/${item.id}/del">删除</a>
+                            </td>
+                        </tr>
+                    </c:forEach>
                     </tbody>
                 </table>
             </div>

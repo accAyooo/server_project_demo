@@ -11,11 +11,13 @@ import com.accAyo.serverProjectDemo.pojo.*;
 import com.accAyo.serverProjectDemo.service.IStaffService;
 import org.aspectj.apache.bcel.classfile.Constant;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Desc:
@@ -164,11 +166,11 @@ public class StaffService extends BaseService implements IStaffService {
     @Override
     public boolean addRoleAccess(int id, int accessId) {
         HashMap<String, Object> propertyMap = new HashMap<>();
-        propertyMap.put("role_id", id);
-        propertyMap.put("access_id", accessId);
+        propertyMap.put("roleId", id);
+        propertyMap.put("accessId", accessId);
         Collection<HibernateExpression> expressions = formExpressionsByProperty(propertyMap, CompareType.Equal);
-        ResultFilter<RoleAccess> rf = getObjects(RoleAccess.class, expressions, 1, 1);
-        if (rf.getTotalCount() != 0) {
+        ResultFilter<RoleAccess> RAs = this.getSingleObject(RoleAccess.class, expressions, 1, 1, false, "id");
+        if (RAs.getTotalCount() != 0) {
             return false;
         }
         RoleAccess ra = new RoleAccess();
@@ -176,5 +178,31 @@ public class StaffService extends BaseService implements IStaffService {
         ra.setRoleId(id);
         this.addObject(ra);
         return true;
+    }
+
+    @Override
+    public Role getRoleById(int id) {
+        return getObject(Role.class, id);
+    }
+
+    @Override
+    public ResultFilter<Access> listRoleAccessByRoleId(int roleId) {
+        HashMap<String, Object> propertyMap = new HashMap<>();
+        propertyMap.put("roleId", roleId);
+        ResultFilter<RoleAccess> raRF = null;
+        try{
+            raRF = this.getObjects(RoleAccess.class, this.formExpressionsByProperty(propertyMap, CompareType.Equal), Integer.MAX_VALUE, 1);
+
+            List<Access> result = new ArrayList<>();
+            for (RoleAccess ra : raRF.getItems()) {
+                result.add(this.getAccessById(ra.getId()));
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+//        ResultFilter<Access> accessRF = new ResultFilter<Access>(result.size(), 1, 1);
+//        accessRF.setItems(result);
+        return  null;
     }
 }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * @Author: shixiangyu
@@ -45,17 +46,41 @@ public class RoleManageController {
                           HttpServletRequest request, HttpServletResponse response, Model model) {
         String[] accessesId = request.getParameterValues("access");
         Role role = staffService.addRole(name);
+        if (role == null)
+            return "redirect:/manage/role/add";
+
         for (String accessStr : accessesId) {
             int accessId = StringUtil.str2int(accessStr);
             if (accessId > 0) {
                 staffService.addRoleAccess(role.getId(), accessId);
             }
         }
-        return "/role/role_add";
+        return "redirect:/manage/role/list";
+    }
+
+    @RequestMapping(value = "/{id}/edit", method = RequestMethod.GET)
+    public String editRolePage(@PathVariable int id,
+                               HttpServletRequest request, HttpServletResponse response, Model model) {
+//        Role role = staffService.getRoleById(id);
+        ResultFilter<Access> raRF = staffService.listRoleAccessByRoleId(13);
+        ResultFilter<Access> accessRF = staffService.listAccesses();
+
+        String accessStr = ",";
+        for (Access a : raRF.getItems()) {
+            accessStr += (a.getId() + ",");
+        }
+
+        model.addAttribute("raRF", raRF);
+        model.addAttribute("accessRf", accessRF);
+//        model.addAttribute("role", role);
+        model.addAttribute("accessStr", accessStr);
+        return "/role/role_edit";
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String roleListPage(HttpServletRequest request, HttpServletResponse response, Model model) {
+        ResultFilter<Role> roleRF = staffService.listAllRoles();
+        model.addAttribute("roleRF", roleRF);
         return "/role/role_list";
     }
 

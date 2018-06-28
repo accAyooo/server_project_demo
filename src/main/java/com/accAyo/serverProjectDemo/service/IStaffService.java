@@ -112,4 +112,13 @@ public interface IStaffService {
      * @return
      */
     boolean addRoleAccess(int id, int accessId);
+
+    /**
+     * 通过id查找角色
+     * @param id
+     * @return
+     */
+    Role getRoleById(int id);
+
+    ResultFilter<Access> listRoleAccessByRoleId(int roleId);
 }
