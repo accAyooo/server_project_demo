@@ -233,4 +233,12 @@ public class StaffService extends BaseService implements IStaffService {
         this.deleteObject(role);
         return true;
     }
+
+    @Override
+    public boolean deleteAllRoleAccessByAccessId(int accessId) {
+        Access access = this.getAccessById(accessId);
+        if (access == null)
+            return false;
+        return true;
+    }
 }

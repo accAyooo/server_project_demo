@@ -139,4 +139,11 @@ public interface IStaffService {
      * @param id
      */
     boolean deleteRoleById(int id);
+
+    /**
+     * 通过权限ID删除所有RoleAccess
+     * @param accessId
+     * @return
+     */
+    boolean deleteAllRoleAccessByAccessId(int accessId);
 }

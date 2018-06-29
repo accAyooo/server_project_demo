@@ -164,5 +164,14 @@ public class RoleManageController {
         return "redirect:/manage/role/access/list";
     }
 
+    @RequestMapping(value = "/access/{accessId}/del", method = RequestMethod.GET)
+    public String delAccessAction(@PathVariable int accessId,
+                                  HttpServletRequest request, HttpServletResponse response, Model model) {
+        Access access = staffService.getAccessById(accessId);
+        if (access != null) {
+            boolean isSuccess = staffService.deleteAllRoleAccessByAccessId(access.getId());
+        }
+        return "redirect:/manage/role/access/list";
+    }
 }
 
