@@ -25,7 +25,7 @@ public class MemcachedService implements IMemcachedService, ConnectionObserver{
 
     private static final int EXP = 60 * 60 * 24 * 3; //过期时间三天
 
-    private static String host = "127.0.0.1";
+    private static String host = "47.52.204.66";
     private static String port = "11211";
 
     private MemcachedClient cache;

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  * @Author: shixiangyu
@@ -61,8 +60,8 @@ public class RoleManageController {
     @RequestMapping(value = "/{id}/edit", method = RequestMethod.GET)
     public String editRolePage(@PathVariable int id,
                                HttpServletRequest request, HttpServletResponse response, Model model) {
-//        Role role = staffService.getRoleById(id);
-        ResultFilter<Access> raRF = staffService.listRoleAccessByRoleId(13);
+        Role role = staffService.getRoleById(id);
+        ResultFilter<Access> raRF = staffService.listRoleAccessByRoleId(role.getId());
         ResultFilter<Access> accessRF = staffService.listAccesses();
 
         String accessStr = ",";
@@ -71,10 +70,45 @@ public class RoleManageController {
         }
 
         model.addAttribute("raRF", raRF);
-        model.addAttribute("accessRf", accessRF);
-//        model.addAttribute("role", role);
+        model.addAttribute("accessRF", accessRF);
+        model.addAttribute("role", role);
         model.addAttribute("accessStr", accessStr);
         return "/role/role_edit";
+    }
+
+    @RequestMapping(value = "/{id}/edit", method = RequestMethod.POST)
+    public String editRoleAction(@PathVariable int id,
+                                 HttpServletRequest request, HttpServletResponse response, Model model) {
+
+        Role role = staffService.getRoleById(id);
+        // 先删除
+        boolean delSuccess = staffService.deleteAllRoleAccessByRoleId(role.getId());
+        if (!delSuccess)
+            return "redirect:/manage/role/" + id + "/edit";
+        String[] accessStr = request.getParameterValues("access");
+        if (accessStr == null) {
+            return "redirect:/manage/role/" + id + "/edit";
+        }
+        for (int i = 0; i < accessStr.length; i ++) {
+            int accessId = StringUtil.str2int(accessStr[i]);
+            if (accessId > 0) {
+                staffService.addRoleAccess(role.getId(), accessId);
+            }
+        }
+        return "redirect:/manage/role/list";
+    }
+
+    @RequestMapping(value = "/{id}/del", method = RequestMethod.GET)
+    public String deleteRoleAction(@PathVariable int id,
+                                   HttpServletRequest request, HttpServletResponse response) {
+        Role role = staffService.getRoleById(id);
+        if (role != null) {
+            boolean isSuccess = staffService.deleteAllRoleAccessByRoleId(role.getId());
+            if (isSuccess) {
+                staffService.deleteRoleById(role.getId());
+            }
+        }
+        return "redirect:/manage/role/list";
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)

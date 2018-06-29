@@ -121,4 +121,22 @@ public interface IStaffService {
     Role getRoleById(int id);
 
     ResultFilter<Access> listRoleAccessByRoleId(int roleId);
+
+    /**
+     * 删除角色下的所有权限
+     * @param roleId
+     * @return
+     */
+    boolean deleteAllRoleAccessByRoleId(int roleId);
+
+    /**
+     * 通过ID删除RoleAccess
+     */
+    boolean deleteRoleAccessById(int raId);
+
+    /**
+     * 通过ID删除角色
+     * @param id
+     */
+    boolean deleteRoleById(int id);
 }

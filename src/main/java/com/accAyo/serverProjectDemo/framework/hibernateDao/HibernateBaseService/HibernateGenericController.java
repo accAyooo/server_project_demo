@@ -315,7 +315,8 @@ public class HibernateGenericController extends HibernateDaoSupport {
             }
         } catch (Exception e) {
         } finally {
-            SessionFactoryUtils.closeSession((Session) impl.getSession());
+            System.out.println("close session");
+//            SessionFactoryUtils.closeSession((Session) impl.getSession());
         }
 
         return totalCount;

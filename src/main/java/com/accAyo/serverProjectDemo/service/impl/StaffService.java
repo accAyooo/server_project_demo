@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.xml.transform.Result;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -189,20 +190,47 @@ public class StaffService extends BaseService implements IStaffService {
     public ResultFilter<Access> listRoleAccessByRoleId(int roleId) {
         HashMap<String, Object> propertyMap = new HashMap<>();
         propertyMap.put("roleId", roleId);
+        Collection<HibernateExpression> expressions = formExpressionsByProperty(propertyMap, CompareType.Equal);
         ResultFilter<RoleAccess> raRF = null;
-        try{
-            raRF = this.getObjects(RoleAccess.class, this.formExpressionsByProperty(propertyMap, CompareType.Equal), Integer.MAX_VALUE, 1);
+        raRF = this.getObjects(RoleAccess.class, this.formExpressionsByProperty(propertyMap, CompareType.Equal), Integer.MAX_VALUE, 1);
+//        raRF = this.getHibernateGenericController().findBy(RoleAccess.class, 1, Integer.MAX_VALUE, "id", false, expressions);
 
-            List<Access> result = new ArrayList<>();
-            for (RoleAccess ra : raRF.getItems()) {
-                result.add(this.getAccessById(ra.getId()));
-            }
-
-        }catch (Exception e){
-            e.printStackTrace();
+        List<Access> result = new ArrayList<>();
+        for (RoleAccess ra : raRF.getItems()) {
+            result.add(this.getAccessById(ra.getAccessId()));
         }
-//        ResultFilter<Access> accessRF = new ResultFilter<Access>(result.size(), 1, 1);
-//        accessRF.setItems(result);
-        return  null;
+
+        ResultFilter<Access> accessRF = new ResultFilter<Access>(result.size(), 1, 1);
+        accessRF.setItems(result);
+        return  accessRF;
+    }
+
+    @Override
+    public boolean deleteAllRoleAccessByRoleId(int roleId) {
+        HashMap<String, Object> propertyMap = new HashMap<>();
+        propertyMap.put("roleId", roleId);
+        Collection<HibernateExpression> expressions = formExpressionsByProperty(propertyMap, CompareType.Equal);
+        ResultFilter<RoleAccess> raRF = getObjects(RoleAccess.class, expressions, 1, Integer.MAX_VALUE, true, "id");
+        for (RoleAccess ra : raRF.getItems()) {
+            this.deleteRoleAccessById(ra.getId());
+        }
+        return true;
+    }
+
+    @Override
+    public boolean deleteRoleAccessById(int raId) {
+        RoleAccess ra = this.getObject(RoleAccess.class, raId);
+        if (ra == null) {
+            return false;
+        }
+        this.deleteObject(ra);
+        return true;
+    }
+
+    @Override
+    public boolean deleteRoleById(int id) {
+        Role role = getRoleById(id);
+        this.deleteObject(role);
+        return true;
     }
 }

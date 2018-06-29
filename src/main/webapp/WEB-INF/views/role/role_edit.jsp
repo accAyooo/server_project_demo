@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%--
   Created by IntelliJ IDEA.
   User: ayooo
@@ -24,11 +25,11 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <h1 class="page-header">权限管理</h1>
             <div class="">
-                <form action="/manage/role/add" class="form-horizontal" method="post">
+                <form action="/manage/role/${role.id}/edit" class="form-horizontal" method="post">
                     <div class="form-group">
                         <label class="col-sm-2 control-label">角色名称：</label>
                         <div class="col-lg-6 col-md-8 col-sm-8">
-                            <input type="text" class="form-control" placeholder="请输入电子邮箱地址" value="${role.name}">
+                            <input type="text" class="form-control" placeholder="请输入电子邮箱地址" value="${role.name}" readonly>
                         </div>
                     </div>
                     <div class="form-group">
@@ -38,7 +39,7 @@
                                 <c:forEach items="${accessRF.items}" var="item">
                                     <label for="c${item.id}" class="checkboxes col-lg-6 col-sm-6">
                                         <input type="checkbox" name="access" id="c${item.id}" value="${item.id}" style="display: none"
-                                            <c:if test="${fn:index(accessStr, item.id) > -1}">checked</c:if>>
+                                            <c:if test="${fn:indexOf(accessStr, item.id) > -1}">checked</c:if>>
                                         <div style="height: 80px;" title="${item.name}${item.path}">
                                             <h5>${item.name}</h5><p>${item.path}</p>
                                         </div>

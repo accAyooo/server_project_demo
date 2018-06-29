@@ -103,6 +103,13 @@
       <artifactId>standard</artifactId>
       <version>1.1.2</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/taglibs/fn -->
+    <dependency>
+      <groupId>taglibs</groupId>
+      <artifactId>fn</artifactId>
+      <version>1.1.1</version>
+    </dependency>
+
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
