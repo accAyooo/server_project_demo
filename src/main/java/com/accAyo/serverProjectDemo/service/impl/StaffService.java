@@ -239,6 +239,62 @@ public class StaffService extends BaseService implements IStaffService {
         Access access = this.getAccessById(accessId);
         if (access == null)
             return false;
+        ResultFilter<RoleAccess> rf = this.getRoleAccessByAccessId(access.getId());
+        for (RoleAccess ra : rf.getItems()) {
+            this.deleteObject(ra);
+        }
+
         return true;
     }
+
+
+    @Override
+    public ResultFilter<RoleAccess> getRoleAccessByAccessId(int accessId) {
+        HashMap<String, Object> propertyMap = new HashMap<>();
+        propertyMap.put("accessId", accessId);
+        Collection<HibernateExpression> expressions = formExpressionsByProperty(propertyMap, CompareType.Equal);
+        return this.getObjects(RoleAccess.class, expressions, 1, Integer.MAX_VALUE, true, "id");
+    }
+
+    @Override
+    public boolean deleteAccessById(int accessId) {
+        Access access = this.getAccessById(accessId);
+        if (access == null) {
+            return false;
+        }
+        this.deleteObject(access);
+        return true;
+    }
+
+    @Override
+    public RoleUser addRoleUser(int id, int roleId) {
+        User user = userService.getUser(id);
+        Role role = this.getRoleById(roleId);
+        if (role == null || user == null)
+            return null;
+
+        RoleUser roleUser = new RoleUser();
+        roleUser.setRoleId(role.getId());
+        roleUser.setUserId(user.getId());
+        roleUser.setStatus(Constants.STATUS_NORMAL);
+        this.addObject(roleUser);
+        return roleUser;
+    }
+
+    @Override
+    public ResultFilter<RoleUser> listAllRoleUserByUserId(int id) {
+        HashMap<String, Object> propertyMap = new HashMap<>();
+        propertyMap.put("userId", id);
+        return this.getObjectsByProperty(RoleUser.class, propertyMap, CompareType.Equal, Integer.MAX_VALUE, 1, true, "id");
+    }
+
+    @Override
+    public boolean deleteRoleUserByUserId(int id) {
+        ResultFilter<RoleUser> ruRF = this.listAllRoleUserByUserId(id);
+        for (RoleUser ru : ruRF.getItems()) {
+            this.deleteObject(ru);
+        }
+        return true;
+    }
+
 }

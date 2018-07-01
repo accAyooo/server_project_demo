@@ -170,6 +170,8 @@ public class RoleManageController {
         Access access = staffService.getAccessById(accessId);
         if (access != null) {
             boolean isSuccess = staffService.deleteAllRoleAccessByAccessId(access.getId());
+            if (isSuccess)
+                staffService.deleteAccessById(access.getId());
         }
         return "redirect:/manage/role/access/list";
     }

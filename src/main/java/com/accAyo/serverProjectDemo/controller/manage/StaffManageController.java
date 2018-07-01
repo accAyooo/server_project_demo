@@ -3,11 +3,15 @@ package com.accAyo.serverProjectDemo.controller.manage;
 import com.accAyo.serverProjectDemo.common.EnumInfoMessage;
 import com.accAyo.serverProjectDemo.common.EnumStaffType;
 import com.accAyo.serverProjectDemo.framework.util.ResultFilter;
+import com.accAyo.serverProjectDemo.pojo.Role;
+import com.accAyo.serverProjectDemo.pojo.RoleUser;
 import com.accAyo.serverProjectDemo.pojo.User;
 import com.accAyo.serverProjectDemo.pojo.UserStaff;
 import com.accAyo.serverProjectDemo.service.impl.StaffService;
 import com.accAyo.serverProjectDemo.service.impl.UserService;
+import com.accAyo.serverProjectDemo.util.StringUtil;
 import com.accAyo.serverProjectDemo.vo.UserVO;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -72,6 +76,41 @@ public class StaffManageController {
 
         model.addAttribute("staffRF", staffResultFilter);
         return "/staff/staff_list";
+    }
+
+    @RequestMapping(value = "/{id}/role", method = RequestMethod.GET)
+    public String staffRolePage(@PathVariable int id,
+                                HttpServletRequest request, HttpServletResponse response, Model model) {
+        UserStaff userStaff = staffService.getUserStaffById(id);
+        if (userStaff == null)
+            return "/staff/staff_list";
+        ResultFilter<Role> roleRF = staffService.listAllRoles();
+        String roleStr = ",";
+        ResultFilter<RoleUser> roleUserRF = staffService.listAllRoleUserByUserId(userStaff.getId());
+        for (RoleUser ru : roleUserRF.getItems()) {
+            roleStr += ru.getRoleId() + ",";
+        }
+        model.addAttribute("roleStr", roleStr);
+        model.addAttribute("roleRF", roleRF);
+        model.addAttribute("staff", userStaff);
+        return "/staff/staff_role";
+    }
+
+    @RequestMapping(value = "/{id}/role", method = RequestMethod.POST)
+    public String staffRoleAction(@PathVariable int id,
+                                  HttpServletRequest request, HttpServletResponse response, Model model) {
+        UserStaff userStaff = staffService.getUserStaffById(id);
+        boolean isSuccess = staffService.deleteRoleUserByUserId(userStaff.getId());
+        String[] roleStrs = request.getParameterValues("roles");
+        if (roleStrs == null)
+            return "redirect:/manage/staff/" + id + "/role";
+        for (int i = 0; i < roleStrs.length; i ++) {
+            int roleId = StringUtil.str2int(roleStrs[i]);
+            if (roleId > 0) {
+                staffService.addRoleUser(userStaff.getId(), roleId);
+            }
+        }
+        return "redirect:/manage/staff/list";
     }
 
     @RequestMapping(value = "/{id}/edit", method = RequestMethod.GET)

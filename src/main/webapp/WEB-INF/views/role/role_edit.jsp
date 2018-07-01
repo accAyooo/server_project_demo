@@ -37,9 +37,10 @@
                         <div class="col-sm-8">
                             <div class="row">
                                 <c:forEach items="${accessRF.items}" var="item">
+                                    <c:set value=",${item.id}," var="itemId"></c:set>
                                     <label for="c${item.id}" class="checkboxes col-lg-6 col-sm-6">
                                         <input type="checkbox" name="access" id="c${item.id}" value="${item.id}" style="display: none"
-                                            <c:if test="${fn:indexOf(accessStr, item.id) > -1}">checked</c:if>>
+                                            <c:if test="${fn:indexOf(accessStr, itemId) > -1}">checked</c:if>>
                                         <div style="height: 80px;" title="${item.name}${item.path}">
                                             <h5>${item.name}</h5><p>${item.path}</p>
                                         </div>

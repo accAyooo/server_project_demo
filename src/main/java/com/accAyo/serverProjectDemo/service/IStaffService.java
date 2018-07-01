@@ -2,9 +2,7 @@ package com.accAyo.serverProjectDemo.service;
 
 import com.accAyo.serverProjectDemo.common.EnumStaffType;
 import com.accAyo.serverProjectDemo.framework.util.ResultFilter;
-import com.accAyo.serverProjectDemo.pojo.Access;
-import com.accAyo.serverProjectDemo.pojo.Role;
-import com.accAyo.serverProjectDemo.pojo.UserStaff;
+import com.accAyo.serverProjectDemo.pojo.*;
 
 /**
  * Desc:
@@ -146,4 +144,41 @@ public interface IStaffService {
      * @return
      */
     boolean deleteAllRoleAccessByAccessId(int accessId);
+
+    /**
+     * 通过权限ID
+     * @param accessId
+     * @return
+     */
+    ResultFilter<RoleAccess> getRoleAccessByAccessId(int accessId);
+
+    /**
+     * 删除权限
+     * @param accessId
+     * @return
+     */
+    boolean deleteAccessById(int accessId);
+
+    /**
+     * 添加roleUser
+     * @param id
+     * @param roleId
+     */
+    RoleUser addRoleUser(int id, int roleId);
+
+    /**
+     * 通过用户ID获取用户的所有角色
+     * @param id
+     * @return
+     */
+    ResultFilter<RoleUser> listAllRoleUserByUserId(int id);
+
+    /**
+     * 删除用户下的所有角色
+     * @param id
+     * @return
+     */
+    boolean deleteRoleUserByUserId(int id);
+
+
 }

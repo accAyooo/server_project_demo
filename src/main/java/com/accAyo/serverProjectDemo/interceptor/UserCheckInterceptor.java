@@ -2,6 +2,7 @@ package com.accAyo.serverProjectDemo.interceptor;
 
 import com.accAyo.serverProjectDemo.common.Constants;
 import com.accAyo.serverProjectDemo.pojo.User;
+import com.accAyo.serverProjectDemo.service.impl.ManageService;
 import com.accAyo.serverProjectDemo.service.impl.UserService;
 import com.accAyo.serverProjectDemo.util.CookieUtil;
 import com.accAyo.serverProjectDemo.vo.UserVO;
@@ -25,6 +26,8 @@ public class UserCheckInterceptor extends HandlerInterceptorAdapter {
 
     @Resource
     private UserService userService;
+    @Resource
+    private ManageService manageService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -43,7 +46,7 @@ public class UserCheckInterceptor extends HandlerInterceptorAdapter {
 
 
         if (request.getServletPath().startsWith("/manage")) {
-            if (userVO == null || !userVO.isStaff()) {
+            if (userVO == null || !userVO.isStaff() || !manageService.isAccess(userVO.getId(), request.getServletPath())) {
                 response.sendRedirect("/error");
                 return false;
             }

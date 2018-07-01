@@ -45,6 +45,7 @@
                         <td>${item.enumStaffType.desc}</td>
                         <td>
                             <a href="/manage/staff/${item.id}/edit">修改</a>
+                            <a href="/manage/staff/${item.id}/role">角色管理</a>
                             <c:if test="${item.status == 0}"><a href="/manage/staff/${item.id}/del">关闭</a></c:if>
                             <c:if test="${item.status == -1}"><a href="/manage/staff/${item.id}/add">开启</a></c:if>
                         </td>
