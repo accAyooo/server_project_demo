@@ -2,6 +2,7 @@ package com.accAyo.serverProjectDemo.service.impl;
 
 import com.accAyo.serverProjectDemo.service.ISpiderService;
 import org.springframework.stereotype.Service;
+import us.codecraft.webmagic.Site;
 
 /**
  * Desc:
@@ -13,4 +14,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class SpiderService implements ISpiderService {
 
+    @Override
+    public void runBookSpider() {
+
+    }
 }

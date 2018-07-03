@@ -9,4 +9,5 @@ package com.accAyo.serverProjectDemo.service;
 
 public interface ISpiderService {
 
+    public void runBookSpider();
 }
