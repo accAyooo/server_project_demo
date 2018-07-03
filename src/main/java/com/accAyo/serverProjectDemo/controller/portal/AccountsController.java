@@ -121,4 +121,19 @@ public class AccountsController {
             return infoVO.createError(EnumInfoMessage.ACCOUNTS_NO_LOGIN.getDesc());
         return infoVO.createSuccess(EnumInfoMessage.OBJECT_SUCCESS.getDesc(), userVO);
     }
+
+    @RequestMapping(value = "/author/agree", method = RequestMethod.GET)
+    @ResponseBody
+    public Object AuthorAgree(HttpServletRequest request, HttpServletResponse response) {
+        InfoVO infoVO = new InfoVO();
+        UserVO userVO = CookieUtil.getLoginUser(request);
+        if (userVO == null)
+            return infoVO.createError(EnumInfoMessage.USER_NOT_EXIST.getDesc());
+        if (userVO.isWriter())
+            return infoVO.createError(EnumInfoMessage.ACCOUNTS_U_R_AUTHOR_ALREADY_FAILED.getDesc());
+
+        User user = userService.getUser(userVO.getId());
+
+        return infoVO.createSuccess(EnumInfoMessage.ACCOUNTS_BECAME_AUTHOR_SUCCESS.getDesc());
+    }
 }

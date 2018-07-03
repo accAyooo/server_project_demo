@@ -1,11 +1,11 @@
 package com.accAyo.serverProjectDemo.controller.portal;
 
 import com.accAyo.serverProjectDemo.service.impl.AuthCodeService;
-import com.accAyo.serverProjectDemo.service.impl.MemcachedService;
 import com.accAyo.serverProjectDemo.util.code.CaptchaUtil;
 import com.accAyo.serverProjectDemo.util.code.ICaptchaUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -15,8 +15,6 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
@@ -68,4 +66,5 @@ public class CommonController {
             }
         }
     }
+
 }
