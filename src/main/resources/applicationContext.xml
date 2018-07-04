@@ -92,6 +92,7 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 
   <aop:config proxy-target-class="true" >
     <aop:advisor advice-ref="txAdvice" pointcut="execution(public * com.accAyo.serverProjectDemo.service.*.*())" />
+    <aop:advisor advice-ref="txAdvice" pointcut="execution(public * com.accAyo.serverProjectDemo.service.*.*.*())" />
   </aop:config>
 </beans>
 

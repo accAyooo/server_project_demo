@@ -1,6 +1,7 @@
 package com.accAyo.serverProjectDemo.controller.portal;
 
 import com.accAyo.serverProjectDemo.service.impl.AuthCodeService;
+import com.accAyo.serverProjectDemo.service.impl.SpiderService;
 import com.accAyo.serverProjectDemo.util.code.CaptchaUtil;
 import com.accAyo.serverProjectDemo.util.code.ICaptchaUtil;
 import org.springframework.stereotype.Controller;
@@ -27,6 +28,8 @@ public class CommonController {
 
     @Resource
     private AuthCodeService authCodeService;
+    @Resource
+    private SpiderService spiderService;
 
     protected static ICaptchaUtil captchaUtil = CaptchaUtil.getInstance();
 

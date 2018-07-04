@@ -42,7 +42,7 @@
         cursor: pointer;
     }
 </style>
-<header class="header" id="Header" style="overflow:hidden;background-color: #333">
+<header class="header" id="Header" style="overflow:hidden;background-color: #333;z-index: 99">
     <div class="logo" style="">
         <h3 href="/manage/index" style="color: #ffffff; padding-top: 10px;padding-bottom: 10px;padding-left: 10px;">柠檬阅读后台</h3>
     </div>

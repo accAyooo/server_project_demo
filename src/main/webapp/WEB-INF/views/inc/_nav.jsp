@@ -40,6 +40,7 @@
     navItems.add(userItems);
 
     Map bookItems = new LinkedHashMap();
+    bookItems.put("spider_book_all", new String[]{"小说列表（爬虫）", "/book/spider/list"});
     bookItems.put("book_add", new String[]{"添加小说", "/book/add"});
     navItems.add(bookItems);
 
