@@ -1,12 +1,16 @@
 package com.accAyo.serverProjectDemo.controller.manage;
 
 import com.accAyo.serverProjectDemo.framework.util.ResultFilter;
+import com.accAyo.serverProjectDemo.pojo.Book;
 import com.accAyo.serverProjectDemo.pojo.SpiderBook;
+import com.accAyo.serverProjectDemo.service.impl.BookService;
 import com.accAyo.serverProjectDemo.service.impl.SpiderService;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import javafx.scene.input.MouseDragEvent;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -31,5 +35,11 @@ public class BookManageController {
         ResultFilter<SpiderBook> sbRF = spiderService.listNewSpiderBooks();
         model.addAttribute("sbRF", sbRF);
         return "/book/spider_book_list";
+    }
+
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    public String addBookPage(HttpServletRequest request, HttpServletResponse response, Model model) {
+
+        return "/book/book_add";
     }
 }
