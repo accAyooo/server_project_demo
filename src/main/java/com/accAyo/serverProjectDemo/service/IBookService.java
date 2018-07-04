@@ -10,5 +10,5 @@ import com.accAyo.serverProjectDemo.pojo.Book;
  */
 public interface IBookService {
 
-    public Book addBookForSpider(int bookId, int authorId, String bookName, String imgUrl, int words, String sort, String intro);
+    public Book addBookForSpider(int bookId, int authorId, String bookName, String imgUrl, String sort, String intro);
 }
