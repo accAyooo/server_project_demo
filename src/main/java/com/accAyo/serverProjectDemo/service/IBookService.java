@@ -1,5 +1,6 @@
 package com.accAyo.serverProjectDemo.service;
 
+import com.accAyo.serverProjectDemo.framework.Exception.MainException;
 import com.accAyo.serverProjectDemo.pojo.Book;
 
 /**
@@ -10,5 +11,5 @@ import com.accAyo.serverProjectDemo.pojo.Book;
  */
 public interface IBookService {
 
-    public Book addBookForSpider(int bookId, int authorId, String bookName, String imgUrl, String sort, String intro);
+    public Book addBookForSpider(int bookId, int authorId, String bookName, String imgUrl, String sort, String intro) throws MainException;
 }

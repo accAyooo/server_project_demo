@@ -20,4 +20,9 @@ public class Constants {
 
     public static final byte STATUS_DELETE = -1;
     public static final byte STATUS_NORMAL = 0;
+
+    public static final int BOOK_MAX_LENTH = 15;
+    public static final int BOOK_MIN_LENTH = 1;
+
+    public static final String SPIDER_BOOK_SYMBOL = "00000";
 }

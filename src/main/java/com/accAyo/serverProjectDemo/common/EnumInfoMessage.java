@@ -274,6 +274,10 @@ public enum EnumInfoMessage {
 
     IDCARD_ERROR_CODE("idcard-4","身份证校验码不对","身份证校验码不对"),
 
+    BOOK_ID_NOT_AVAILABLE("bc-1", "创建的书ID无效", "创建的书ID无效"),
+    BOOK_NAME_NOT_AVAILABLE("bc-2", "创建的书书名无效", "创建的书书名无效"),
+    BOOK_INTRO_NOT_AVAILABLE("bc-3", "创建书的简介无效", "创建书的简介无效"),
+    BOOK_HAS_EXISTS("bc-4", "创建的书已存在", "创建的书已存在"),
     ;
 
     private String desc;

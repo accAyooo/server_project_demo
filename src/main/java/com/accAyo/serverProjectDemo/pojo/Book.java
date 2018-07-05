@@ -28,6 +28,7 @@ public class Book {
     private int words;
     private byte status;
     private boolean free;
+    private byte fromType;
 
     @Column(name = "last_chapter_id")
     private int lastChapterId;
@@ -252,5 +253,13 @@ public class Book {
 
     public void setVisitCounts(int visitCounts) {
         this.visitCounts = visitCounts;
+    }
+
+    public byte getFromType() {
+        return fromType;
+    }
+
+    public void setFromType(byte fromType) {
+        this.fromType = fromType;
     }
 }
