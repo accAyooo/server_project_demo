@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +30,8 @@ public class BookManageController {
 
     @Resource
     private SpiderService spiderService;
+    @Resource
+    private BookService bookService;
 
     @RequestMapping(value = "/spider/list")
     public String spiderBookListPage(HttpServletRequest request, HttpServletResponse response, Model model) {
@@ -41,5 +44,13 @@ public class BookManageController {
     public String addBookPage(HttpServletRequest request, HttpServletResponse response, Model model) {
 
         return "/book/book_add";
+    }
+
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public String bookListPage(@RequestParam(defaultValue = "1") int page,
+                               HttpServletRequest request, HttpServletResponse response, Model model) {
+        ResultFilter<Book> bookRF = bookService.listBooks(page, 20);
+        model.addAttribute("bookRF", bookRF);
+        return "/book/list";
     }
 }
